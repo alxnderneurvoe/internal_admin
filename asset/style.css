@@ -1,0 +1,85 @@
+/* Top Navigation Bar */
+.navbar {
+    background-color: #4e73df;
+    padding: 10px 15px;
+}
+
+.navbar .nav-link {
+    color: #fff !important;
+    font-size: 1rem;
+    padding: 8px 20px;
+}
+
+.navbar .nav-link:hover {
+    background-color: #2e59d9;
+    border-radius: 5px;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    padding: 20px;
+}
+
+/* Dashboard Cards */
+.card {
+    border: none;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+}
+
+.card-body {
+    font-size: 1.2rem;
+}
+
+/* Navbar logo styling */
+.navbar-nav .nav-link i {
+    margin-right: 8px;
+}
+
+
+h1 {
+            text-align: center;
+            color: #333;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            height: 25px;
+            background-color: #4caf50;
+            width: 0;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 30%;
+        }
+        .stat h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #333;
+        }
+        .stat p {
+            font-size: 1.2em;
+            margin: 0;
+            color: #555;
+        }
