@@ -31,7 +31,7 @@ if ($result) {
 }
 
 // Query to count the total number of files uploaded by the current user
-$sql = "SELECT COUNT(*) AS total_files FROM files WHERE user_id = '$user_id'"; 
+$sql = "SELECT COUNT(*) AS total_files FROM files WHERE user_id = '$user_id'";
 $result = $conn->query($sql);
 
 // Check if the query returns a result
@@ -46,26 +46,28 @@ if ($result) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="icon" type="image/x-icon" href="asset/Logo.png">
     <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- External CSS File -->
+    <link rel="stylesheet" href="asset/style.css"> <!-- External CSS File -->
 </head>
+
 <body>
 
     <!-- Top Navigation Bar (List Bar) -->
     <nav class="navbar navbar-expand navbar-light bg-light shadow mb-4">
-    <!-- Logo on the left -->
+        <!-- Logo on the left -->
         <a class="navbar-brand" href="dashboard.php">
             <img src="asset/Logo.png" alt="" style="width: auto; height: 30px;">
         </a>
         <a class="navbar-brand" href="dashboard.php">
-        <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
+            <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
         </a>
-    
+
         <!-- Navbar items -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -105,11 +107,13 @@ if ($result) {
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Invoices</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_invoices; ?></div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total
+                                        Invoices</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_invoices; ?>
+                                    </div>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="view_invoice.php" class="btn btn-primary btn-lg">View</a>         
+                                    <a href="view_invoice.php" class="btn btn-primary btn-lg">View</a>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +124,8 @@ if ($result) {
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Earnings</div>
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total
+                                        Earnings</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">Rp. 0</div>
                                 </div>
                                 <div class="col-auto">
@@ -136,13 +141,14 @@ if ($result) {
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Files Uploaded</div>
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Files
+                                        Uploaded</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <?php echo $total_files; ?> 
+                                        <?php echo $total_files; ?>
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="files.php" class="btn btn-primary btn-lg">View</a>         
+                                    <a href="files.php" class="btn btn-primary btn-lg">View</a>
                                 </div>
                             </div>
                         </div>
@@ -155,16 +161,19 @@ if ($result) {
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Pending Invoices</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Produk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <?php echo $total_files; ?>
+                                    </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                    <a href="products.php" class="btn btn-primary btn-lg">View</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- File Storage Section -->
@@ -188,4 +197,5 @@ if ($result) {
     </div>
     <script src="scripts.js"></script>
 </body>
+
 </html>

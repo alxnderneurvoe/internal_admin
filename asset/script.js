@@ -227,3 +227,30 @@ function formatInvoice(event) {
             let value = input.value.replace(/\D/g, ""); // Menghapus karakter selain angka
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Menambahkan pemisah ribuan
           }
+
+          document.querySelector("form").addEventListener("submit", function(event) {
+            // Collect item data
+            var items = [];
+            var rows = document.getElementById('items_table_body').rows;
+        
+            for (var i = 0; i < rows.length; i++) {
+                var item = {
+                    name: rows[i].cells[1].innerText,
+                    qty: rows[i].cells[2].innerText.split(' ')[0],  // Get the numeric part of the qty
+                    price: parseFloat(rows[i].cells[3].innerText.replace(/[^\d.-]/g, "")),
+                    discount: parseFloat(rows[i].cells[4].innerText),
+                    net: parseFloat(rows[i].cells[5].innerText.replace(/[^\d.-]/g, ""))  // Get net amount
+                };
+                items.push(item);
+            }
+        
+            // Add items data to the form
+            var itemsInput = document.createElement("input");
+            itemsInput.type = "hidden";
+            itemsInput.name = "items";
+            itemsInput.value = JSON.stringify(items);  // Send as JSON
+            this.appendChild(itemsInput);
+        
+            // Continue with form submission
+        });
+        
