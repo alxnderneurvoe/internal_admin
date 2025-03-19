@@ -57,10 +57,7 @@ if ($result) {
 </head>
 
 <body>
-
-    <!-- Top Navigation Bar (List Bar) -->
     <nav class="navbar navbar-expand navbar-light bg-light shadow mb-4">
-        <!-- Logo on the left -->
         <a class="navbar-brand" href="dashboard.php">
             <img src="asset/Logo.png" alt="" style="width: auto; height: 30px;">
         </a>
@@ -68,7 +65,6 @@ if ($result) {
             <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
         </a>
 
-        <!-- Navbar items -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" href="dashboard.php">
@@ -167,7 +163,7 @@ if ($result) {
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="products.php" class="btn btn-primary btn-lg">View</a>
+                                    <a href="product/products.php" class="btn btn-primary btn-lg">View</a>
                                 </div>
                             </div>
                         </div>

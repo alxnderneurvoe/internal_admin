@@ -1,26 +1,7 @@
-/* Top Navigation Bar */
-.navbar {
-    background-color: #4e73df;
-    padding: 10px 15px;
-}
-
-.navbar .nav-link {
-    color: #fff !important;
-    font-size: 1rem;
-    padding: 8px 20px;
-}
-
-.navbar .nav-link:hover {
-    background-color: #2e59d9;
-    border-radius: 5px;
-}
-
-/* Content Wrapper */
 .content-wrapper {
     padding: 20px;
 }
 
-/* Dashboard Cards */
 .card {
     border: none;
 }
@@ -151,3 +132,13 @@ h1 {
 .container {
     max-width: 1200px;
 }
+
+.card-body .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* Membatasi nama produk menjadi 5 baris */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Teks yang terlalu panjang akan dipotong dengan tiga titik */
+    height: 1em; /* Mengatur tinggi untuk menampung 5 baris */
+}
+
