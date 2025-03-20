@@ -117,7 +117,7 @@ $result = $conn->query($sql);
                     }
 
                     echo '
-            <div class="col">
+            <div class="col" hei>
                 <div class="card border-light shadow-sm">
                 <img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset.Logo.png') . '" class="card-img-top" alt="' . $row['name'] . '">
                     <div class="card-body">

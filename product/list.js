@@ -12,7 +12,7 @@ const categories = [
     { id: "Pipa dan Fitting HDPE", name: "Pipa dan Fitting HDPE" },
     { id: "Pipa dan Fitting Limbah", name: "Pipa dan Fitting Limbah" },
     { id: "Pipa dan Fitting PPR", name: "Pipa dan Fitting PPR" },
-    { id: "Pipa dan Fitting PVC", name: "Wipa dan Fitting PVC" }
+    { id: "Pipa dan Fitting PVC", name: "Pipa dan Fitting PVC" }
 ];
 
 const unit = [
