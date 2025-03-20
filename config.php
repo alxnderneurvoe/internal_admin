@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$dbname = "u838660829_user";
-$username = "u838660829_user";  // Default MySQL username in XAMPP
-$password = "Solusindo15!";      // Default MySQL password in XAMPP
+$dbname = "internal_admin";
+$username = "root";  // Default MySQL username in XAMPP
+$password = "";      // Default MySQL password in XAMPP
 
 // Create connection
 $conn = new mysqli($host, $username, $password, $dbname);

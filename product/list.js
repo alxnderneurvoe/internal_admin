@@ -27,14 +27,13 @@ const unit = [
 
 function populateCategories() {
     const selectElement = document.getElementById('category-select');
-    selectElement.innerHTML = ''; // Clear existing options
+    selectElement.innerHTML = '';
 
     categories.forEach(category => {
         const option = document.createElement('option');
         option.value = category.id;
         option.textContent = category.name;
-        
-        // Check if the category is selected based on the URL query parameter
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('category') === category.id) {
             option.selected = true;
@@ -44,10 +43,6 @@ function populateCategories() {
     });
 }
 
-// Call the function to populate categories
-populateCategories();
-
-// Fungsi untuk memuat kategori ke dalam dropdown
 function loadCategories() {
     const categorySelect = document.getElementById("productCategory");
 
