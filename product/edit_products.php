@@ -1,19 +1,15 @@
 <?php
 include('../config.php');
 
-// Cek apakah ada parameter 'id' di URL
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
-    
-    // Ambil data produk berdasarkan ID
+
     $sql = "SELECT * FROM products WHERE id = $product_id";
     $result = $conn->query($sql);
 
-    // Jika produk ditemukan
     if ($result->num_rows > 0) {
         $product = $result->fetch_assoc();
     } else {
-        // Jika tidak ditemukan produk dengan ID tersebut
         echo "Product not found!";
         exit;
     }
@@ -23,7 +19,7 @@ if (isset($_GET['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari form edit
+
     $name = $_POST['name'];
     $price = $_POST['price'];
     $unit = $_POST['unit'];
@@ -32,17 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $inaproc_link = $_POST['inaproc_link'];
     $siplah_link = $_POST['siplah_link'];
     $blibli_link = $_POST['blibli_link'];
+    $category = $_POST['category'];
 
-    // Periksa apakah gambar baru diupload
+
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $image_name = $_FILES['image']['name'];
         $image_tmp_name = $_FILES['image']['tmp_name'];
         $image_path = 'images/' . $image_name;
 
-        // Pindahkan gambar ke folder yang diinginkan
+
         move_uploaded_file($image_tmp_name, $image_path);
 
-        // Update produk dengan gambar baru
+
         $sql = "UPDATE products SET 
                 name = '$name', 
                 price = '$price', 
@@ -52,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 inaproc_link = '$inaproc_link', 
                 siplah_link = '$siplah_link', 
                 blibli_link = '$blibli_link', 
-                image_url = '$image_path'
+                image_url = '$image_path',
+                category = '$category' 
                 WHERE id = $product_id";
     } else {
-        // Jika tidak ada gambar baru, hanya update data lainnya
         $sql = "UPDATE products SET 
                 name = '$name', 
                 price = '$price', 
@@ -64,17 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 shopee_link = '$shopee_link', 
                 inaproc_link = '$inaproc_link', 
                 siplah_link = '$siplah_link', 
-                blibli_link = '$blibli_link'
+                blibli_link = '$blibli_link',
+                category = '$category' 
                 WHERE id = $product_id";
     }
 
-    // Jalankan query untuk update
+    echo $sql;
     if ($conn->query($sql) === TRUE) {
         echo "Product updated successfully!";
-        header("Location: products.php"); // Redirect ke halaman daftar produk
+        header("Location: products.php");
     } else {
         echo "Error updating product: " . $conn->error;
     }
+
 }
 
 ?>
@@ -130,40 +129,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="edit_products.php?id=<?php echo $product['id']; ?>" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="productName" name="name" value="<?php echo $product['name']; ?>" required>
+                <input type="text" class="form-control" id="productName" name="name"
+                    value="<?php echo $product['name']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="productPrice" class="form-label">Product Price</label>
-                <input type="number" class="form-control" id="productPrice" name="price" value="<?php echo $product['price']; ?>" required>
+                <input type="number" class="form-control" id="productPrice" name="price"
+                    value="<?php echo $product['price']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="productUnit" class="form-label">Unit</label>
-                <input type="text" class="form-control" id="productUnit" name="unit" value="<?php echo $product['unit']; ?>" required>
+                <input type="text" class="form-control" id="productUnit" name="unit"
+                    value="<?php echo $product['unit']; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="productCategory" class="form-label">Category</label>
+                <select class="form-select" id="productCategory" name="category" required>
+                    <option value="Pipa HDPE" <?php echo ($product['category'] == 'Pipa HDPE') ? 'selected' : ''; ?>>Pipa
+                        HDPE</option>
+                    <option value="Fitting HDPE" <?php echo ($product['category'] == 'Fitting HDPE') ? 'selected' : ''; ?>>Fitting HDPE</option>
+                    <option value="Pipa PVC" <?php echo ($product['category'] == 'Pipa PVC') ? 'selected' : ''; ?>>Pipa
+                        PVC</option>
+                    <option value="Fitting PVC" <?php echo ($product['category'] == 'Fitting PVC') ? 'selected' : ''; ?>>
+                        Fitting PVC</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="tokopediaLink" class="form-label">Tokopedia Link</label>
-                <input type="url" class="form-control" id="tokopediaLink" name="tokopedia_link" value="<?php echo $product['tokopedia_link']; ?>">
+                <input type="url" class="form-control" id="tokopediaLink" name="tokopedia_link"
+                    value="<?php echo $product['tokopedia_link']; ?>">
             </div>
             <div class="mb-3">
                 <label for="shopeeLink" class="form-label">Shopee Link</label>
-                <input type="url" class="form-control" id="shopeeLink" name="shopee_link" value="<?php echo $product['shopee_link']; ?>">
+                <input type="url" class="form-control" id="shopeeLink" name="shopee_link"
+                    value="<?php echo $product['shopee_link']; ?>">
             </div>
             <div class="mb-3">
                 <label for="inaprocLink" class="form-label">Inaproc Link</label>
-                <input type="url" class="form-control" id="inaprocLink" name="inaproc_link" value="<?php echo $product['inaproc_link']; ?>">
+                <input type="url" class="form-control" id="inaprocLink" name="inaproc_link"
+                    value="<?php echo $product['inaproc_link']; ?>">
             </div>
             <div class="mb-3">
                 <label for="siplahLink" class="form-label">Siplah Link</label>
-                <input type="url" class="form-control" id="siplahLink" name="siplah_link" value="<?php echo $product['siplah_link']; ?>">
+                <input type="url" class="form-control" id="siplahLink" name="siplah_link"
+                    value="<?php echo $product['siplah_link']; ?>">
             </div>
             <div class="mb-3">
                 <label for="blibliLink" class="form-label">Blibli Link</label>
-                <input type="url" class="form-control" id="blibliLink" name="blibli_link" value="<?php echo $product['blibli_link']; ?>">
+                <input type="url" class="form-control" id="blibliLink" name="blibli_link"
+                    value="<?php echo $product['blibli_link']; ?>">
             </div>
             <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
                 <input type="file" class="form-control" id="productImage" name="image">
-                <img src="<?php echo $product['image_url']; ?>" alt="Product Image" class="img-thumbnail mt-2" style="width: 150px;">
+                <img src="<?php echo $product['image_url']; ?>" alt="Product Image" class="img-thumbnail mt-2"
+                    style="width: 150px;">
             </div>
             <button type="submit" class="btn btn-primary w-100">Update Product</button>
         </form>

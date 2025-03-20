@@ -2,6 +2,19 @@
 include('../config.php');
 
 $sql = "SELECT * FROM products";
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$category = isset($_GET['category']) ? $_GET['category'] : '';
+
+$sql = "SELECT * FROM products WHERE 1 ORDER BY products.name ASC";
+
+if ($search) {
+    $sql .= " AND name LIKE '%" . $conn->real_escape_string($search) . "%'";
+}
+
+if ($category) {
+    $sql .= " AND category = '" . $conn->real_escape_string($category) . "'";
+}
+
 $result = $conn->query($sql);
 ?>
 
@@ -13,6 +26,8 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <link rel="icon" type="image/x-icon" href="../asset/Logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="list.js"></script>
@@ -54,6 +69,14 @@ $result = $conn->query($sql);
 
     <div class="container mt-5">
         <h2 class="mb-4 text-center text-primary">Product List</h2>
+        <form method="GET" class="d-flex justify-content-center mb-4">
+            <input type="text" class="form-control w-25" name="search" placeholder="Search by product name"
+                value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+            <select class="form-select w-25 ms-2" name="category" id="category-select" onchange="this.form.submit()">
+                <option value="">Select Category</option>
+            </select>
+        </form>
+
         <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
             <i class="fas fa-plus-circle"></i> Add Product
         </button>
@@ -62,7 +85,6 @@ $result = $conn->query($sql);
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    // Check for availability of platform links
                     $platformLinks = '';
                     $platformButtons = [];
 
@@ -95,33 +117,33 @@ $result = $conn->query($sql);
                     }
 
                     echo '
-                    <div class="col">
-                        <div class="card border-light shadow-sm">
-                            <img src="' . $row['image_url'] . '" class="card-img-top" alt="' . $row['name'] . '">
-                            <div class="card-body">
-                                <h6 class="card-title text-center" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; height: 3em;">
-                                    ' . $row['name'] . '
-                                </h6>
-                                <p class="card-text text-center text-muted" style="height: 1em";>Rp. ' . number_format($row['price'], 0, ',', '.') . '</p>
-                                <p class="card-text text-center small" style="height: 0.5em";>Satuan : ' . $row['unit'] . '</p>
-                                <p class="card-text text-center small">Kategori : ' . $row['category'] . '</p>
-                                ' . $platformLinks . '
-                            </div>
-                            <div class="card-footer text-center">
-                                <a href="edit_products.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="delete_products.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\')">Delete</a>
-                            </div>
-                        </div>
-                    </div>';
+            <div class="col">
+                <div class="card border-light shadow-sm">
+                <img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset.Logo.png') . '" class="card-img-top" alt="' . $row['name'] . '">
+                    <div class="card-body">
+                        <h6 class="card-title text-center" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; height: 3.5em;">
+                            ' . $row['name'] . '
+                        </h6>
+                        <p class="card-text text-center text-muted" style="height: 1em";>Rp. ' . number_format($row['price'], 0, ',', '.') . '</p>
+                        <p class="card-text text-center small" style="height: 0.5em";>Satuan : ' . $row['unit'] . '</p>
+                        <p class="card-text text-center small">Kategori : ' . $row['category'] . '</p>
+                        ' . $platformLinks . '
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="edit_products.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="delete_products.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\')">Delete</a>
+                    </div>
+                </div>
+            </div>';
                 }
             } else {
                 echo "<p class='text-center'>No products available</p>";
             }
             ?>
         </div>
+
     </div>
 
-    <!-- Modal for Adding Product -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -133,25 +155,26 @@ $result = $conn->query($sql);
                 <div class="modal-body">
                     <form action="add_products.php" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="productName" class="form-label">Product Name</label>
+                            <label for="productName" class="form-label">Nama Item</label>
                             <input type="text" class="form-control" id="productName" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productPrice" class="form-label">Product Price</label>
+                            <label for="productPrice" class="form-label">Harga Produk</label>
                             <input type="number" class="form-control" id="productPrice" name="price" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productUnit" class="form-label">Unit</label>
-                            <input type="text" class="form-control" id="productUnit" name="unit" required>
+                            <label for="productUnit" class="form-label">Satuan</label>
+                            <select class="form-select" id="productUnit" name="unit" required>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="productCategory" class="form-label">Category</label>
+                            <label for="productCategory" class="form-label">Kategori</label>
                             <select class="form-select" id="productCategory" name="category" required>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="productImage" class="form-label">Product Image</label>
-                            <input type="file" class="form-control" id="productImage" name="image" required>
+                            <label for="productImage" class="form-label">Gambar Produk</label>
+                            <input type="file" class="form-control" id="productImage" name="image">
                         </div>
                         <div class="mb-3">
                             <label for="tokopediaLink" class="form-label">Tokopedia Link</label>
@@ -183,8 +206,11 @@ $result = $conn->query($sql);
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             loadCategories();
+            loadUnit();
+            populateCategories();
         });
     </script>
+    <script src="list.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .btn-tokped {
@@ -215,6 +241,24 @@ $result = $conn->query($sql);
             background-color: #009ea9;
             border-color: #009ea9;
             color: white;
+        }
+
+        .dropzone {
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dropzone.dragover {
+            background-color: #f8f9fa;
+        }
+
+        .preview img {
+            max-width: 100px;
+            margin-top: 10px;
         }
     </style>
 </body>
