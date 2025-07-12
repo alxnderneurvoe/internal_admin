@@ -76,6 +76,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 }
 
+$categories = [];
+$categoryQuery = "SELECT * FROM products";
+$categoryResult = $conn->query($categoryQuery);
+while ($row = $categoryResult->fetch_assoc()) {
+    $categories[] = $row;
+}
+
+// Ambil unit yang tersedia
+$units = [];
+$unitQuery = "SELECT * FROM products"; // Ganti dengan tabel unit yang sesuai
+$unitResult = $conn->query($unitQuery);
+while ($row = $unitResult->fetch_assoc()) {
+    $units[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -88,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/x-icon" href="../asset/Logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="list.js"></script>
 </head>
 
 <body>
@@ -124,6 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </nav>
 
     <div class="container mt-5">
+        <div class="container mt-3 text-center">
+            <a href="products.php" class="btn btn-secondary">Back to Products</a>
+        </div>
+        <p></p>
         <h2 class="mb-4 text-center text-primary">Edit Product</h2>
 
         <form action="edit_products.php?id=<?php echo $product['id']; ?>" method="POST" enctype="multipart/form-data">
@@ -138,22 +157,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     value="<?php echo $product['price']; ?>" required>
             </div>
             <div class="mb-3">
-                <label for="productUnit" class="form-label">Unit</label>
-                <input type="text" class="form-control" id="productUnit" name="unit"
-                    value="<?php echo $product['unit']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="productCategory" class="form-label">Category</label>
-                <select class="form-select" id="productCategory" name="category" required>
-                    <option value="Pipa HDPE" <?php echo ($product['category'] == 'Pipa HDPE') ? 'selected' : ''; ?>>Pipa
-                        HDPE</option>
-                    <option value="Fitting HDPE" <?php echo ($product['category'] == 'Fitting HDPE') ? 'selected' : ''; ?>>Fitting HDPE</option>
-                    <option value="Pipa PVC" <?php echo ($product['category'] == 'Pipa PVC') ? 'selected' : ''; ?>>Pipa
-                        PVC</option>
-                    <option value="Fitting PVC" <?php echo ($product['category'] == 'Fitting PVC') ? 'selected' : ''; ?>>
-                        Fitting PVC</option>
+                <label for="productUnit" class="form-label">Satuan</label>
+                <select class="form-select" id="productUnit" name="unit" required>
+                    <?php foreach ($units as $unit): ?>
+                        <option value="<?php echo $unit['id']; ?>" <?php echo ($unit['id'] == $product['unit']) ? 'selected' : ''; ?>>
+                            <?php echo $unit['unit']; ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="productCategory" class="form-label">Kategori</label>
+                <select class="form-select" id="productCategory" name="category" required>
+                    <?php foreach ($categories as $cat): ?>
+                        <option value="<?php echo $cat['id']; ?>" <?php echo ($cat['id'] == $product['category']) ? 'selected' : ''; ?>>
+                            <?php echo $cat['category']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
             <div class="mb-3">
                 <label for="tokopediaLink" class="form-label">Tokopedia Link</label>
                 <input type="url" class="form-control" id="tokopediaLink" name="tokopedia_link"
@@ -189,6 +213,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            loadCategories();
+            loadUnit();
+            populateCategories();
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

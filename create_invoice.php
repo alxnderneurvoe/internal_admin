@@ -123,7 +123,7 @@ function generate_pdf($client_name, $subtotal, $invoice_number, $items, $tax, $g
         </ul>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
         <h2>Create Invoice</h2>
         <form action="create_letter.php" method="post">
             <table>
@@ -269,7 +269,7 @@ function generate_pdf($client_name, $subtotal, $invoice_number, $items, $tax, $g
 
         function updateGrandTotal() {
             let subtotal = 0;
-            $("#items_table_body tr").each(function() {
+            $("#items_table_body tr").each(function () {
                 const qty = parseFloat($(this).find(".qty").val());
                 const price = parseFloat($(this).find(".price").val());
                 const discount = parseFloat($(this).find(".discount").val());
@@ -289,7 +289,7 @@ function generate_pdf($client_name, $subtotal, $invoice_number, $items, $tax, $g
             $('#grand_total').text(grandTotal.toLocaleString('id-ID'));
         }
 
-        $("#addItemButton").click(function() {
+        $("#addItemButton").click(function () {
             const itemName = $("#item_name").val();
             const itemQty = parseInt($("#item_qty").val());
             const itemPrice = parseFloat($("#item_price").val());

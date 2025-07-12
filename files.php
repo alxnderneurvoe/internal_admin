@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
                         if ($conn->query($insert_sql)) {
                             $success_message .= "File '$file_name' uploaded successfully!<br>";
                             header('Location: files.php');
-                            exit(); 
+                            exit();
                         } else {
                             $error_message .= "Error saving file data for '$file_name' in the database.<br>";
                         }
@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>File Storage</title>
@@ -76,18 +77,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css"> <!-- External CSS File -->
 </head>
+
 <body>
 
     <!-- Top Navigation Bar (List Bar) -->
     <nav class="navbar navbar-expand navbar-light bg-light shadow mb-4">
-    <!-- Logo on the left -->
+        <!-- Logo on the left -->
         <a class="navbar-brand" href="dashboard.php">
             <img src="asset/Logo.png" alt="" style="width: auto; height: 30px;">
         </a>
         <a class="navbar-brand" href="dashboard.php">
-        <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
+            <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
         </a>
-    
+
         <!-- Navbar items -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -103,6 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
             <li class="nav-item">
                 <a class="nav-link" href="files.php">
                     <i class="fas fa-fw fa-folder"></i> File Storage
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="product/products.php">
+                    <i class="fas fa-fw fa-folder"></i> Products
                 </a>
             </li>
             <li class="nav-item">
@@ -135,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
                     <input type="file" class="form-control" id="files" name="files[]" multiple required>
                 </div>
                 <button type="submit" class="btn btn-primary">Upload</button>
-                <hr class="double">           
+                <hr class="double">
             </form>
 
             <!-- Display Messages -->
@@ -152,66 +159,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
             <!-- File Storage Section -->
             <h3>Uploaded Files</h3>
 
-    <!-- Filter Section -->
-    <form method="GET" action="">
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <input type="text" class="form-control" name="search" placeholder="Search by file name" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            </div>
-            <div class="col-md-4">
-                <input type="date" class="form-control" name="start_date" value="<?php echo isset($_GET['start_date']) ? htmlspecialchars($_GET['start_date']) : ''; ?>">
-            </div>
-            <div class="col-md-4">
-                <input type="date" class="form-control" name="end_date" value="<?php echo isset($_GET['end_date']) ? htmlspecialchars($_GET['end_date']) : ''; ?>">
-            </div>
-            <div class="col-md-12 mt-3">
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-        </div>
-    </form>
-
-    <div class="row">
-        <?php
-        // Get the search, start_date, and end_date parameters from the GET request
-        $search = isset($_GET['search']) ? $_GET['search'] : '';
-        $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
-        $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
-
-        // Build the SQL query with filters
-        $query = "SELECT * FROM files WHERE 1"; // Base query
-
-        // Add search filter if provided
-        if (!empty($search)) {
-            $query .= " AND file_name LIKE '%" . $conn->real_escape_string($search) . "%'";
-        }
-
-        // Add date range filter if provided
-        if (!empty($start_date)) {
-            $query .= " AND upload_date >= '" . $conn->real_escape_string($start_date) . "'";
-        }
-        if (!empty($end_date)) {
-            $query .= " AND upload_date <= '" . $conn->real_escape_string($end_date) . "'";
-        }
-
-        // Execute the query
-        $files_result = $conn->query($query);
-
-        // Display the files
-        while ($file = $files_result->fetch_assoc()) {
-        ?>
-            <div class="col-lg-3 col-md-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary"><?php echo $file['file_name']; ?></h6>
+            <!-- Filter Section -->
+            <form method="GET" action="">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="search" placeholder="Search by file name"
+                            value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                     </div>
-                    <div class="card-body">
-                        <p>Uploaded: <?php echo $file['upload_date']; ?></p>
-                        <p><a href="<?php echo $file['file_path']; ?>" target="_blank">Download</a></p>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" name="start_date"
+                            value="<?php echo isset($_GET['start_date']) ? htmlspecialchars($_GET['start_date']) : ''; ?>">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" name="end_date"
+                            value="<?php echo isset($_GET['end_date']) ? htmlspecialchars($_GET['end_date']) : ''; ?>">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <button type="submit" class="btn btn-primary">Filter</button>
                     </div>
                 </div>
+            </form>
+
+            <div class="row">
+                <?php
+                // Get the search, start_date, and end_date parameters from the GET request
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+                $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+
+                // Build the SQL query with filters
+                $query = "SELECT * FROM files WHERE 1"; // Base query
+                
+                // Add search filter if provided
+                if (!empty($search)) {
+                    $query .= " AND file_name LIKE '%" . $conn->real_escape_string($search) . "%'";
+                }
+
+                // Add date range filter if provided
+                if (!empty($start_date)) {
+                    $query .= " AND upload_date >= '" . $conn->real_escape_string($start_date) . "'";
+                }
+                if (!empty($end_date)) {
+                    $query .= " AND upload_date <= '" . $conn->real_escape_string($end_date) . "'";
+                }
+
+                // Execute the query
+                $files_result = $conn->query($query);
+
+                // Display the files
+                while ($file = $files_result->fetch_assoc()) {
+                    ?>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary"><?php echo $file['file_name']; ?></h6>
+                            </div>
+                            <div class="card-body">
+                                <p>Uploaded: <?php echo $file['upload_date']; ?></p>
+                                <p><a href="<?php echo $file['file_path']; ?>" target="_blank">Download</a></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
-        <?php } ?>
-    </div>
 
         </div>
     </div>
@@ -223,4 +233,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
 
     <script src="scripts.js"></script> <!-- External JS File -->
 </body>
+
 </html>

@@ -1,5 +1,5 @@
 .content-wrapper {
-    padding: 20px;
+    padding: 10px;
 }
 
 .card {
@@ -21,61 +21,73 @@
 
 
 h1 {
-            text-align: center;
-            color: #333;
-        }
-        .progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .progress-bar {
-            height: 25px;
-            background-color: #4caf50;
-            width: 0;
-            text-align: center;
-            color: white;
-            line-height: 25px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
-        }
-        .stat {
-            text-align: center;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            width: 30%;
-        }
-        .stat h2 {
-            margin: 0 0 10px;
-            font-size: 1.5em;
-            color: #333;
-        }
-        .stat p {
-            font-size: 1.2em;
-            margin: 0;
-            color: #555;
-        }
+    text-align: center;
+    color: #333;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    height: 25px;
+    background-color: #4caf50;
+    width: 0;
+    text-align: center;
+    color: white;
+    line-height: 25px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.stat {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 30%;
+}
+
+.stat h2 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.stat p {
+    font-size: 1.2em;
+    margin: 0;
+    color: #555;
+}
 
 /* General style for box containers */
 .box-container {
-    height: 100px;
-    width: 200px;
-    border: 1px solid #ccc; /* Border around each box */
-    padding: 15px; /* Padding inside each box */
+    /* height: 100px; */
+    /* width: 200px; */
+    border: 1px solid #ccc;
+    /* Border around each box */
+    padding: 15px;
+    /* Padding inside each box */
     margin: 10px 0;
-    margin-right: 20px; /* Spacing between the boxes */
-    border-radius: 5px; /* Optional: rounded corners */
-    background-color: #f9f9f9; /* Light background color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for a 3D effect */
+    /* margin-right: 20px; */
+    /* Spacing between the boxes */
+    border-radius: 5px;
+    /* Optional: rounded corners */
+    background-color: #f9f9f9;
+    /* Light background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Slight shadow for a 3D effect */
 }
 
 /* Style the label inside each box */
@@ -83,14 +95,16 @@ h1 {
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 5px;
-    display: block; /* Makes the label take up the full width */
+    display: block;
+    /* Makes the label take up the full width */
 }
 
 /* Style the paragraph and span inside each box */
 .box-container p {
     margin: 0;
     font-size: 16px;
-    color: #333; /* Dark color for the text */
+    color: #333;
+    /* Dark color for the text */
 }
 
 /* Style for input fields (for Ongkir) */
@@ -129,16 +143,36 @@ h1 {
     justify-content: space-between;
 }
 
-.container {
-    max-width: 1200px;
+/* Untuk full width dan full height */
+.container-fluid {
+    align-content: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 30px 50px;
+    min-height: 100vh;
 }
+
+/* Optional: supaya table tidak ngepress */
+.table {
+    width: 100%;
+}
+
+/* Buat form input agar tersusun lebih fleksibel */
+form table th {
+    padding-right: 20px;
+    vertical-align: top;
+}
+
+
 
 .card-body .card-title {
     display: -webkit-box;
-    -webkit-line-clamp: 5; /* Membatasi nama produk menjadi 5 baris */
+    -webkit-line-clamp: 5;
+    /* Membatasi nama produk menjadi 5 baris */
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis; /* Teks yang terlalu panjang akan dipotong dengan tiga titik */
-    height: 1em; /* Mengatur tinggi untuk menampung 5 baris */
+    text-overflow: ellipsis;
+    /* Teks yang terlalu panjang akan dipotong dengan tiga titik */
+    height: 1em;
+    /* Mengatur tinggi untuk menampung 5 baris */
 }
-

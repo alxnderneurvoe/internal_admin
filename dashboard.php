@@ -7,39 +7,43 @@ if (!isset($_SESSION['email'])) {
 
 include('config.php');
 
-// Fetch user data
 $email = $_SESSION['email'];
 $sql = "SELECT id FROM users WHERE email = '$email'";
 $result = $conn->query($sql);
 $user = $result->fetch_assoc();
 $user_id = $user['id'];
 
-// Fetch files uploaded by the user
-$files_sql = "SELECT * FROM files WHERE user_id = '$user_id'";
+$files_sql = "SELECT * FROM files";
 $files_result = $conn->query($files_sql);
 
-// Fetch total number of invoices from the database
-$sql = "SELECT COUNT(*) AS total_invoices FROM invoices"; // Adjust the table name if necessary
+$sql = "SELECT COUNT(*) AS total_invoices FROM invoices";
 $result = $conn->query($sql);
 
-// Check if the query returns a result
 if ($result) {
     $row = $result->fetch_assoc();
     $total_invoices = $row['total_invoices'];
 } else {
-    $total_invoices = 0; // Default to 0 if there is an issue with the query
+    $total_invoices = 0;
 }
 
-// Query to count the total number of files uploaded by the current user
-$sql = "SELECT COUNT(*) AS total_files FROM files WHERE user_id = '$user_id'";
+$sql = "SELECT COUNT(*) AS total_files FROM files";
 $result = $conn->query($sql);
 
-// Check if the query returns a result
 if ($result) {
     $row = $result->fetch_assoc();
     $total_files = $row['total_files'];
 } else {
-    $total_files = 0; // Default to 0 if there is an issue with the query
+    $total_files = 0;
+}
+
+$sql = "SELECT COUNT(*) AS total_product FROM products";
+$result = $conn->query($sql);
+
+if ($result) {
+    $row = $result->fetch_assoc();
+    $total_product = $row['total_product'];
+} else {
+    $total_product = 0;
 }
 
 ?>
@@ -79,6 +83,11 @@ if ($result) {
             <li class="nav-item">
                 <a class="nav-link" href="files.php">
                     <i class="fas fa-fw fa-folder"></i> File Storage
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="product/products.php">
+                    <i class="fas fa-fw fa-folder"></i> Products
                 </a>
             </li>
             <li class="nav-item">
@@ -159,7 +168,7 @@ if ($result) {
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text- text-uppercase mb-1">Produk</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <?php echo $total_files; ?>
+                                        <?php echo $total_product; ?>
                                     </div>
                                 </div>
                                 <div class="col-auto">
