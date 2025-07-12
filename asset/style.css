@@ -167,7 +167,7 @@ form table th {
 
 .card-body .card-title {
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    /* -webkit-line-clamp: 5; */
     /* Membatasi nama produk menjadi 5 baris */
     -webkit-box-orient: vertical;
     overflow: hidden;
