@@ -47,7 +47,7 @@ if (!$result) {
             <li class="nav-item"><a class="nav-link" href="../dashboard.php"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="../create_letter.php"><i class="fas fa-fw fa-file-invoice"></i> Create Letter</a></li>
             <li class="nav-item"><a class="nav-link" href="../files.php"><i class="fas fa-fw fa-folder"></i> File Storage</a></li>
-            <li class="nav-item"><a class="nav-link" href="product/products.php"><i class="fas fa-fw fa-folder"></i> Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="../product/products.php"><i class="fas fa-fw fa-folder"></i> Products</a></li>
             <li class="nav-item"><a class="nav-link" href="../logout.php"><i class="fas fa-fw fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>

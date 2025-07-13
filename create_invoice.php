@@ -186,7 +186,8 @@ PT SEMESTA SISTEM SOLUSINDO
 }
 
 // Fungsi terbilang sederhana (untuk angka <= 999 juta)
-function terbilang($angka) {
+function terbilang($angka)
+{
     $angka = abs($angka);
     $bilangan = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
     $hasil = "";
@@ -244,6 +245,11 @@ function terbilang($angka) {
             </li>
             <li class="nav-item"><a class="nav-link" href="files.php"><i class="fas fa-fw fa-folder"></i> File
                     Storage</a></li>
+            <li class="nav-item">
+                <a class="nav-link" href="product/products.php">
+                    <i class="fas fa-fw fa-folder"></i> Products
+                </a>
+            </li>
             <li class="nav-item"><a class="nav-link" href="logout.php"><i class="fas fa-fw fa-sign-out-alt"></i>
                     Logout</a></li>
         </ul>

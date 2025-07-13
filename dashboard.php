@@ -102,7 +102,7 @@ if ($result) {
     <div id="content-wrapper" class="content-wrapper">
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container">
             <h3>Welcome, <?php echo $email; ?></h3>
 
             <!-- Dashboard Statistics -->
