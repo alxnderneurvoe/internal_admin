@@ -68,6 +68,16 @@ if (!$result) {
                 <option value="">Select Category</option>
             </select>
         </form>
+        <div class="container">
+            <h2>Import Produk Massal dari CSV</h2>
+            <form method="POST" enctype="multipart/form-data" class="mt-4">
+                <div class="mb-3">
+                    <label for="csv_file" class="form-label">Pilih file CSV</label>
+                    <input type="file" name="csv_file" id="csv_file" class="form-control" accept=".csv" required>
+                </div>
+                <button type="submit" name="import" class="btn btn-primary">Import Sekarang</button>
+            </form>
+        </div>
 
         <div class="d-flex justify-content-between mb-3">
             <button class="btn btn-outline-primary" id="toggleViewBtn">Switch to Table View</button>
@@ -94,7 +104,7 @@ if (!$result) {
                 $platformLinks = implode(' ', $platformButtons);
                 echo '<div class="col">
                         <div class="card border-light shadow-sm" style="height: 510px;">
-                            <img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset/no-image.png') . '" class="card-img-top" alt="' . $row['name'] . '" style="height: auto; width: 90%;">
+                            <img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset/no-image.png') . '" class="card-img-top"  alt="' . $row['name'] . '" style="height: auto; width: 70%;">
                             <div class="card-body">
                                 <h6 class="card-title text-center" style="overflow: hidden;">' . $row['name'] . '</h6>
                                 <p class="card-text text-center text-muted">Rp. ' . number_format($row['price'], 0, ',', '.') . '</p>
