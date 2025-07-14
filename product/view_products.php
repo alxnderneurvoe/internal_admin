@@ -17,7 +17,7 @@ if (!$product) {
     die("Product not found");
 }
 
-$stmt = $conn->prepare("SELECT * FROM product_variants WHERE product_id = ?");
+$stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $variants = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);

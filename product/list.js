@@ -1,6 +1,6 @@
 // categories.js
 
-const categories = [
+const Category = [
     { id: "", name: "Semua" },
     { id: "Aksesoris Perangkat Jaringan", name: "Aksesoris Perangkat Jaringan" },
     { id: "Alat Peraga Edukatif", name: "Alat Peraga Edukatif" },
@@ -20,6 +20,7 @@ const categories = [
 
 const unit = [
     { id: "", name: "Pilih Satuan" },
+    { id: "Batang", name: "Batang" },
     { id: "Pcs", name: "Pcs" },
     { id: "Meter", name: "Meter" },
     { id: "Unit", name: "Unit" },
@@ -29,42 +30,33 @@ const unit = [
 
 ];
 
-function populateCategories() {
-    const selectElement = document.getElementById('category-select');
-    selectElement.innerHTML = '';
+function loadCategoryFilter() {
+    const select = document.getElementById("category-select");
+    Category.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat.id;
+        option.textContent = cat.name;
 
-    categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.id;
-        option.textContent = category.name;
-
+        // Jika kategori dari URL cocok, tandai sebagai selected
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('category') === category.id) {
+        if (urlParams.get('category') === cat.id) {
             option.selected = true;
         }
 
-        selectElement.appendChild(option);
+        select.appendChild(option);
     });
 }
 
-function loadCategories() {
-    fetch('get_categories.php')
-        .then(response => response.json())
-        .then(data => {
-            const categorySelects = document.querySelectorAll('#category-select, #productCategory');
-            categorySelects.forEach(select => {
-                select.innerHTML = '<option value="">Select Category</option>';
-                data.forEach(cat => {
-                    const option = document.createElement('option');
-                    option.value = cat;
-                    option.textContent = cat;
-                    select.appendChild(option);
-                });
-            });
-        })
-        .catch(error => console.error('Failed to load categories:', error));
-}
+function loadCategory() {
+    const CategorySelect = document.getElementById("productCategory");
 
+    Category.forEach(Category => {
+        const option = document.createElement("option");
+        option.value = Category.id;
+        option.textContent = Category.name;
+        CategorySelect.appendChild(option);
+    });
+}
 
 function loadUnit() {
     const unitSelect = document.getElementById("productUnit");

@@ -51,141 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                    VALUES ('$user_id', '$client_name', '$address', '$subtotal', '$tax', '$shipping', '$grand_total')";
 
     if ($conn->query($insert_sql) === TRUE) {
-        generate_pdf($client_name, $subtotal, $items, $tax, $grand_total);
+        echo '<div class="alert alert-success">Invoice berhasil disimpan ke database.</div>';
     } else {
         echo "Error: " . $conn->error;
     }
 }
 
-function generate_pdf($client_name, $subtotal, $items, $tax, $grand_total)
-{
-    try {
-        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-        $pdf->SetTitle('Penawaran Harga');
-        $pdf->SetMargins(15, 15, 15, true);
-        $pdf->AddPage(); // <-- WAJIB sebelum fungsi lain!
-        $pdf->SetFont('helvetica', 'B', 18);
-        $pdf->Image(__DIR__ . '/asset/Logo.png', 15, 10, 30, 0, '', '', '', false, 300);
-        $pdf->SetXY(50, 15);
-        $pdf->Cell(0, 10, 'SEMESTA SISTEM SOLUSINDO', 0, 1, 'L', 0, '', 0);
-        $pdf->SetFont('helvetica', '', 10);
-        $pdf->SetXY(50, 23);
-        $pdf->Cell(0, 6, 'Provide Solutions For Indonesian', 0, 1, 'L', 0, '', 0);
-
-        $pdf->Ln(18);
-
-        // NOMOR, LAMPIRAN, PERIHAL
-        $pdf->SetFont('helvetica', '', 11);
-        $pdf->Cell(30, 6, 'Nomor', 0, 0);
-        $pdf->Cell(3, 6, ':', 0, 0);
-        $pdf->Cell(60, 6, '76/III/SSS/SPH/2025', 0, 1);
-        $pdf->Cell(30, 6, 'Lampiran', 0, 0);
-        $pdf->Cell(3, 6, ':', 0, 0);
-        $pdf->Cell(60, 6, '-', 0, 1);
-        $pdf->Cell(30, 6, 'Perihal', 0, 0);
-        $pdf->Cell(3, 6, ':', 0, 0);
-        $pdf->Cell(60, 6, 'Penawaran Harga', 0, 1);
-
-        $pdf->Ln(2);
-        $pdf->SetFont('helvetica', 'B', 11);
-        $pdf->Cell(0, 6, 'Kepada Yth.', 0, 1);
-        $pdf->Cell(0, 6, 'PDAM Tirta Siak', 0, 1);
-        $pdf->Cell(0, 6, 'Pekanbaru', 0, 1);
-
-        $pdf->Ln(2);
-
-        // TABEL BARANG
-        $tbl = '<table border="1" cellpadding="4">
-            <tr style="background-color:#eee;">
-                <th width="30" align="center"><b>NO</b></th>
-                <th width="220" align="center"><b>Nama Barang</b></th>
-                <th width="50" align="center"><b>Qty</b></th>
-                <th width="60" align="center"><b>Harga</b></th>
-                <th width="70" align="center"><b>Total Harga</b></th>
-            </tr>';
-        $no = 1;
-        foreach ($items as $item) {
-            $tbl .= '<tr>
-                <td align="center">' . $no . '</td>
-                <td>' . htmlspecialchars($item['name']) . '</td>
-                <td align="center">' . $item['qty'] . ' ' . htmlspecialchars($item['unit']) . '</td>
-                <td align="right">' . number_format($item['price'], 0, ',', '.') . '</td>
-                <td align="right">' . number_format($item['net'], 0, ',', '.') . '</td>
-            </tr>';
-            $no++;
-        }
-        // Subtotal, PPN, Grand Total
-        $tbl .= '<tr>
-            <td colspan="4" align="right" style="background-color:#ffe5e5;"><b>Subtotal</b></td>
-            <td align="right" style="background-color:#ffe5e5;"><b>Rp. ' . number_format($subtotal, 0, ',', '.') . '</b></td>
-        </tr>
-        <tr>
-            <td colspan="4" align="right" style="background-color:#e5f1ff;"><b>PPN 11%</b></td>
-            <td align="right" style="background-color:#e5f1ff;"><b>Rp. ' . number_format($tax, 0, ',', '.') . '</b></td>
-        </tr>
-        <tr>
-            <td colspan="4" align="right" style="background-color:#e5ffe5;"><b>Grand Total</b></td>
-            <td align="right" style="background-color:#e5ffe5;"><b>Rp. ' . number_format($grand_total, 0, ',', '.') . '</b></td>
-        </tr>
-        </table>';
-        $pdf->writeHTML($tbl, true, false, false, false, '');
-
-        // TERBILANG
-        $pdf->Ln(2);
-        $pdf->SetFont('helvetica', 'B', 10);
-        $pdf->Cell(0, 6, 'Terbilang : ' . terbilang($grand_total) . ' Rupiah', 0, 1);
-
-        // Keterangan
-        $pdf->SetFont('helvetica', '', 10);
-        $pdf->MultiCell(0, 6, "Demikian penawaran harga dari kami, atas perhatian dan kerjasamanya kami ucapkan terima kasih.", 0, 'L');
-        $pdf->Ln(2);
-
-        // Catatan
-        $catatan = "Catatan :
-1. Penawaran ini berlaku 10 hari setelah penawaran dibuat
-2. Harga dapat berubah sewaktu-waktu
-3. Harga belum termasuk ongkir
-4. Pembayaran dapat dilakukan sejak invoice diterbitkan
-5. Untuk pemesanan lebih lanjut hubungi
-PT SEMESTA SISTEM SOLUSINDO
-+62 811-1933-077 (Rahmad Saputra)";
-        $pdf->SetFont('helvetica', '', 9);
-        $pdf->MultiCell(0, 5, $catatan, 0, 'L');
-        $pdf->Ln(2);
-
-        // Tanda tangan
-        $pdf->SetFont('helvetica', '', 10);
-        $pdf->SetXY(135, $pdf->GetY());
-        $pdf->Cell(0, 6, 'Jakarta, ' . date('d M Y'), 0, 1, 'L');
-        $pdf->SetXY(135, $pdf->GetY());
-        $pdf->Cell(0, 6, 'Hormat Kami,', 0, 1, 'L');
-        $pdf->SetXY(135, $pdf->GetY() + 10);
-        $pdf->Image(__DIR__ . '/asset/Logo.png', 135, $pdf->GetY(), 30, 0, '', '', '', false, 300);
-        $pdf->SetXY(135, $pdf->GetY() + 20);
-        $pdf->SetFont('helvetica', 'B', 10);
-        $pdf->Cell(0, 6, 'Rahmad Saputra', 0, 1, 'L');
-        $pdf->SetFont('helvetica', '', 10);
-        $pdf->Cell(0, 6, 'Direktur Utama', 0, 1, 'L');
-
-        // Footer
-        $pdf->SetY(-35);
-        $pdf->SetFont('helvetica', '', 8);
-        $pdf->Cell(0, 5, 'PT. Semesta Sistem Solusindo', 0, 1, 'L');
-        $pdf->Cell(0, 5, 'Perkantoran Mitra Matraman Blok A1/19, Jl. Mat Kebon Manggis, Matraman, Kota Adm. Jakarta Timur, DKI Jakarta', 0, 1, 'L');
-        $pdf->Cell(0, 5, 'e-mail : ptsemestasistemsolusindo@gmail.com | Phone : +628 11193 3077 | Website : semestasistemsolusindo.com', 0, 1, 'L');
-
-        if (!file_exists('uploads')) {
-            mkdir('uploads', 0777, true);
-        }
-        $file_name = 'penawaran_' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $client_name) . '.pdf';
-        $pdf->Output(__DIR__ . '/uploads/' . $file_name, 'F');
-        echo 'Document created successfully. You can <a href="uploads/' . $file_name . '" download>download it here</a>';
-    } catch (Exception $e) {
-        echo 'PDF Generation Error: ' . $e->getMessage();
-    }
-}
-
-// Fungsi terbilang sederhana (untuk angka <= 999 juta)
+// Fungsi terbilang sederhana
 function terbilang($angka)
 {
     $angka = abs($angka);
@@ -267,7 +139,7 @@ function terbilang($angka)
                 <div class="form-group col-md-6">
                     <label for="client_nik">NIK/NPWP</label>
                     <input type="text" name="client_nik" id="client_nik" class="form-control"
-                        placeholder="XXXX XXXX XXXX XXXX" required>
+                        placeholder="XXXX XXXX XXXX XXXX">
                 </div>
             </div>
             <div class="form-row">

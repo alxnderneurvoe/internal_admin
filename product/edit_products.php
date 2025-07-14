@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $image_name = $_FILES['image']['name'];
         $image_tmp_name = $_FILES['image']['tmp_name'];
-        $image_path = 'images/' . $image_name;
+        $image_path = '../uploads/' . $image_name;
 
 
         move_uploaded_file($image_tmp_name, $image_path);
@@ -83,13 +83,41 @@ while ($row = $categoryResult->fetch_assoc()) {
     $categories[] = $row;
 }
 
-// Ambil unit yang tersedia
 $units = [];
-$unitQuery = "SELECT * FROM products"; // Ganti dengan tabel unit yang sesuai
+$unitQuery = "SELECT * FROM products";
 $unitResult = $conn->query($unitQuery);
 while ($row = $unitResult->fetch_assoc()) {
     $units[] = $row;
 }
+
+$units = [
+    ['id' => '', 'unit' => 'Pilih Satuan'],
+    ['id' => 'Batang', 'unit' => 'Batang'],
+    ['id' => 'Pcs', 'unit' => 'Pcs'],
+    ['id' => 'Meter', 'unit' => 'Meter'],
+    ['id' => 'Unit', 'unit' => 'Unit'],
+    ['id' => 'Paket', 'unit' => 'Paket'],
+    ['id' => 'Roll-50m', 'unit' => 'Roll-50m'],
+    ['id' => 'Roll-100m', 'unit' => 'Roll-100m'],
+];
+
+$categories = [
+    ['id' => '', 'category' => 'Pilih Kategori'],
+    ['id' => 'Aksesoris Perangkat Jaringan', 'category' => 'Aksesoris Perangkat Jaringan'],
+    ['id' => 'Alat Peraga Edukatif', 'category' => 'Alat Peraga Edukatif'],
+    ['id' => 'Buku Pendidikan', 'category' => 'Buku Pendidikan'],
+    ['id' => 'Furnitur Kantor/Sekolah', 'category' => 'Furnitur Kantor/Sekolah'],
+    ['id' => 'Laptop/PC/AiO', 'category' => 'Laptop/PC/AiO'],
+    ['id' => 'Laptop', 'category' => 'Laptop'],
+    ['id' => 'Meja dan Kursi Guru', 'category' => 'Meja dan Kursi Guru'],
+    ['id' => 'Meja dan Kursi Siswa', 'category' => 'Meja dan Kursi Siswa'],
+    ['id' => 'Meja dan Kursi Paud', 'category' => 'Meja dan Kursi Paud'],
+    ['id' => 'Mesin Welding Pipe', 'category' => 'Mesin Welding Pipe'],
+    ['id' => 'Pipa dan Fitting HDPE', 'category' => 'Pipa dan Fitting HDPE'],
+    ['id' => 'Pipa dan Fitting Limbah', 'category' => 'Pipa dan Fitting Limbah'],
+    ['id' => 'Pipa dan Fitting PPR', 'category' => 'Pipa dan Fitting PPR'],
+    ['id' => 'Pipa dan Fitting PVC', 'category' => 'Pipa dan Fitting PVC']
+];
 ?>
 
 <!DOCTYPE html>
@@ -100,9 +128,13 @@ while ($row = $unitResult->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
     <link rel="icon" type="image/x-icon" href="../asset/Logo.png">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="list.js"></script>
+    <link rel="stylesheet" href="../asset/style.css">
 </head>
 
 <body>
@@ -113,28 +145,17 @@ while ($row = $unitResult->fetch_assoc()) {
         <a class="navbar-brand" href="../dashboard.php">
             <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
         </a>
-
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="../dashboard.php">
-                    <i class="fas fa-fw fa-tachometer-alt"></i> Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../create_letter.php">
-                    <i class="fas fa-fw fa-file-invoice"></i> Create Letter
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../files.php">
-                    <i class="fas fa-fw fa-folder"></i> File Storage
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../logout.php">
-                    <i class="fas fa-fw fa-sign-out-alt"></i> Logout
-                </a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="../dashboard.php"><i class="fas fa-fw fa-tachometer-alt"></i>
+                    Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="../create_letter.php"><i
+                        class="fas fa-fw fa-file-invoice"></i> Create Letter</a></li>
+            <li class="nav-item"><a class="nav-link" href="../files.php"><i class="fas fa-fw fa-folder"></i> File
+                    Storage</a></li>
+            <li class="nav-item"><a class="nav-link" href="../product/products.php"><i class="fas fa-fw fa-folder"></i>
+                    Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="../logout.php"><i class="fas fa-fw fa-sign-out-alt"></i>
+                    Logout</a></li>
         </ul>
     </nav>
 
@@ -156,23 +177,20 @@ while ($row = $unitResult->fetch_assoc()) {
                 <input type="number" class="form-control" id="productPrice" name="price"
                     value="<?php echo $product['price']; ?>" required>
             </div>
-            <div class="mb-3">
-                <label for="productUnit" class="form-label">Satuan</label>
-                <select class="form-select" id="productUnit" name="unit" required>
-                    <?php foreach ($units as $unit): ?>
-                        <option value="<?php echo $unit['id']; ?>" <?php echo ($unit['id'] == $product['unit']) ? 'selected' : ''; ?>>
-                            <?php echo $unit['unit']; ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            <select class="form-select" id="productUnit" name="unit" required>
+                <?php foreach ($units as $unit): ?>
+                    <option value="<?= htmlspecialchars($unit['id']) ?>" <?= ($unit['id'] == $product['unit']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($unit['unit']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
             <div class="mb-3">
                 <label for="productCategory" class="form-label">Kategori</label>
                 <select class="form-select" id="productCategory" name="category" required>
                     <?php foreach ($categories as $cat): ?>
-                        <option value="<?php echo $cat['id']; ?>" <?php echo ($cat['id'] == $product['category']) ? 'selected' : ''; ?>>
-                            <?php echo $cat['category']; ?>
+                        <option value="<?php echo htmlspecialchars($cat['id']); ?>" <?php echo ($cat['id'] == $product['category']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($cat['category']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -205,7 +223,8 @@ while ($row = $unitResult->fetch_assoc()) {
             </div>
             <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
-                <input type="file" class="form-control" id="productImage" name="image">
+                <input type="file" class="form-control" id="productImage" name="image"
+                    accept=".jpg, .jpeg, .png, .webp">
                 <img src="<?php echo $product['image_url']; ?>" alt="Product Image" class="img-thumbnail mt-2"
                     style="width: 150px;">
             </div>
