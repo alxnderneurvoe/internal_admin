@@ -8,6 +8,7 @@ const Category = [
     { id: "Furnitur Kantor/Sekolah", name: "Furnitur Kantor/Sekolah" },
     { id: "Laptop/PC/AiO", name: "Laptop/PC/AiO" },
     { id: "Laptop", name: "Laptop" },
+    { id: "Lampu Jalan/PJUTS", name: "Lampu Jalan/PJUTS" },
     { id: "Mesin Industri", name: "Mesin Industri" },
     { id: "Meja dan Kursi Guru", name: "Meja dan Kursi Guru" },
     { id: "Meja dan Kursi Siswa", name: "Meja dan Kursi Siswa" },
@@ -17,6 +18,8 @@ const Category = [
     { id: "Pipa dan Fitting Limbah", name: "Pipa dan Fitting Limbah" },
     { id: "Pipa dan Fitting PPR", name: "Pipa dan Fitting PPR" },
     { id: "Pipa dan Fitting PVC", name: "Pipa dan Fitting PVC" },
+    { id: "Paket SR Perpipaan", name: "Paket SR Perpipaan" },
+
 ];
 
 const unit = [

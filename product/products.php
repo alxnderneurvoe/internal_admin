@@ -27,7 +27,7 @@ if (!$result) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024">
     <title>Product List</title>
     <link rel="icon" type="image/x-icon" href="../asset/Logo.png">
     <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
@@ -70,12 +70,14 @@ if (!$result) {
         </form>
         <div class="container">
             <h2>Import Produk Massal dari CSV</h2>
-            <form method="POST" enctype="multipart/form-data" class="mt-4">
+            <form method="POST" enctype="multipart/form-data" class="mt-4" action="upload_import.php">
                 <div class="mb-3">
                     <label for="csv_file" class="form-label">Pilih file CSV</label>
                     <input type="file" name="csv_file" id="csv_file" class="form-control" accept=".csv" required>
                 </div>
-                <button type="submit" name="import" class="btn btn-primary">Import Sekarang</button>
+                <button type="submit" name="import" class="btn btn-primary">Import
+                    Sekarang</button>
+                <p></p>
             </form>
         </div>
 
@@ -104,9 +106,19 @@ if (!$result) {
                 $platformLinks = implode(' ', $platformButtons);
                 echo '<div class="col">
                         <div class="card border-light shadow-sm" style="height: 510px;">
-                            <img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset/no-image.png') . '" class="card-img-top"  alt="' . $row['name'] . '" style="height: auto; width: 70%;">
+<img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset/no-image.png') . '" class="card-img-top mx-auto d-block" alt="' . $row['name'] . '" style="width: 70%; height: auto;">
                             <div class="card-body">
-                                <h6 class="card-title text-center" style="overflow: hidden;">' . $row['name'] . '</h6>
+                                <h6 class="card-title text-center" style="
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 2;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    line-height: 1.2em;
+                                    height: 2.5em;
+                                ">
+                                    ' . htmlspecialchars($row['name']) . '
+                                </h6>
                                 <p class="card-text text-center text-muted">Rp. ' . number_format($row['price'], 0, ',', '.') . '</p>
                                 <p class="card-text text-center small">Satuan : ' . $row['unit'] . '</p>
                                 <p class="card-text text-center small">Kategori : ' . $row['category'] . '</p>

@@ -109,14 +109,19 @@ $categories = [
     ['id' => 'Furnitur Kantor/Sekolah', 'category' => 'Furnitur Kantor/Sekolah'],
     ['id' => 'Laptop/PC/AiO', 'category' => 'Laptop/PC/AiO'],
     ['id' => 'Laptop', 'category' => 'Laptop'],
+    ['id' => 'Laptop', 'category' => 'Laptop'],
+    ['id' => 'Lampu Jalan/PJUTS', 'category' => 'Lampu Jalan/PJUTS'],
     ['id' => 'Meja dan Kursi Guru', 'category' => 'Meja dan Kursi Guru'],
     ['id' => 'Meja dan Kursi Siswa', 'category' => 'Meja dan Kursi Siswa'],
     ['id' => 'Meja dan Kursi Paud', 'category' => 'Meja dan Kursi Paud'],
+    ['id' => 'Mesin Industri', 'category' => 'Mesin Industri'],
+    ['id' => 'Mesin Jahit', 'category' => 'Mesin Jahit'],
     ['id' => 'Mesin Welding Pipe', 'category' => 'Mesin Welding Pipe'],
     ['id' => 'Pipa dan Fitting HDPE', 'category' => 'Pipa dan Fitting HDPE'],
     ['id' => 'Pipa dan Fitting Limbah', 'category' => 'Pipa dan Fitting Limbah'],
     ['id' => 'Pipa dan Fitting PPR', 'category' => 'Pipa dan Fitting PPR'],
-    ['id' => 'Pipa dan Fitting PVC', 'category' => 'Pipa dan Fitting PVC']
+    ['id' => 'Pipa dan Fitting PVC', 'category' => 'Pipa dan Fitting PVC'],
+    ['id' => 'Paket SR Perpipaan', 'category' => 'Paket SR Perpipaan']
 ];
 ?>
 
@@ -125,7 +130,7 @@ $categories = [
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024">
     <title>Edit Product</title>
     <link rel="icon" type="image/x-icon" href="../asset/Logo.png">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
