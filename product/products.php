@@ -1,6 +1,12 @@
 <?php
 include('../config.php');
 
+session_start();
+if (!isset($_SESSION['email'])) {
+    header('Location: login.php');
+    exit();
+}
+
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 
