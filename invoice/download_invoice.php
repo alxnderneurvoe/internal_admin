@@ -72,8 +72,8 @@ $romawi = bulanRomawi($tanggal->format('n'));
 $terbilang = terbilang($invoice['grand_total']) . ' Rupiah';
 
 $basePath = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
-$kopPath = $basePath . '/asset/kop.png';
-$ttdPath = $basePath . '/asset/ttd.png';
+$kopPath = $basePath . '../asset/kop.png';
+$ttdPath = $basePath . '../asset/ttd.png';
 
 $html = '<html><head><style>
 @page {
