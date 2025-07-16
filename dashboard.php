@@ -118,7 +118,7 @@ if ($result) {
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="view_invoice.php" class="btn btn-primary btn-lg">View</a>
+                                    <a href="invoice/view_invoice.php" class="btn btn-primary btn-lg">View</a>
                                 </div>
                             </div>
                         </div>

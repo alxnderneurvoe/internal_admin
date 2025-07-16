@@ -75,7 +75,7 @@ if (!isset($_SESSION['email'])) {
                     <div class="card-body text-center">
                         <h5 class="card-title">Invoice</h5>
                         <p class="card-text">Create a new invoice.</p>
-                        <a href="create_invoice.php" class="btn btn-primary">Create Invoice</a>
+                        <a href="invoice/create_invoice.php" class="btn btn-primary">Create Invoice</a>
                     </div>
                 </div>
             </div>
