@@ -39,21 +39,21 @@ if (!$result) {
 
 <body>
     <nav class="navbar navbar-expand navbar-light bg-light shadow mb-4">
-        <a class="navbar-brand" href="../dashboard.php">
+        <a class="navbar-brand" href="products_guest.php">
             <img src="../asset/Logo.png" alt="" style="width: auto; height: 30px;">
         </a>
-        <a class="navbar-brand" href="../dashboard.php">
+        <a class="navbar-brand" href="products_guest.php">
             <i class="fas fa-fw fa-tachometer-alt"></i> PT Semesta Sistem Solusindo
         </a>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="../dashboard.php"><i class="fas fa-fw fa-tachometer-alt"></i>
+            <!-- <li class="nav-item"><a class="nav-link" href="../dashboard.php"><i class="fas fa-fw fa-tachometer-alt"></i>
                     Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="../create_letter.php"><i
                         class="fas fa-fw fa-file-invoice"></i> Create Letter</a></li>
             <li class="nav-item"><a class="nav-link" href="../files.php"><i class="fas fa-fw fa-folder"></i> File
                     Storage</a></li>
             <li class="nav-item"><a class="nav-link" href="../product/products.php"><i class="fas fa-fw fa-folder"></i>
-                    Products</a></li>
+                    Products</a></li> -->
             <li class="nav-item"><a class="nav-link" href="../logout.php"><i class="fas fa-fw fa-sign-out-alt"></i>
                     Logout</a></li>
         </ul>
@@ -68,7 +68,7 @@ if (!$result) {
                 <option value="">Select Category</option>
             </select>
         </form>
-        <div class="container">
+        <!-- <div class="container">
             <h2>Import Produk Massal dari CSV</h2>
             <form method="POST" enctype="multipart/form-data" class="mt-4" action="upload_import.php">
                 <div class="mb-3">
@@ -79,12 +79,12 @@ if (!$result) {
                     Sekarang</button>
                 <p></p>
             </form>
-        </div>
+        </div> -->
 
         <div class="d-flex justify-content-between mb-3">
             <button class="btn btn-outline-primary" id="toggleViewBtn">Switch to Table View</button>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal"><i
-                    class="fas fa-plus-circle"></i> Add Product</button>
+            <!-- <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal"><i
+                    class="fas fa-plus-circle"></i> Add Product</button> -->
         </div>
 
         <!-- Grid View -->
@@ -105,7 +105,7 @@ if (!$result) {
                     $platformButtons[] = '<a href="' . $row['blibli_link'] . '" target="_blank" class="btn btn-padi btn-sm">Padi</a>';
                 $platformLinks = implode(' ', $platformButtons);
                 echo '<div class="col">
-                        <div class="card border-light shadow-sm" style="height: 510px;">
+                        <div class="card border-light shadow-sm" style="height: 470px;">
 <img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset/no-image.png') . '" class="card-img-top mx-auto d-block" alt="' . $row['name'] . '" style="width: 70%; height: 200px;">
                             <div class="card-body">
                                 <h6 class="card-title text-center" style="
@@ -123,12 +123,7 @@ if (!$result) {
                                 <p class="card-text text-center small">Satuan : ' . $row['unit'] . '</p>
                                 <p class="card-text text-center small">Kategori : ' . $row['category'] . '</p>
                                 <div class="text-center">' . $platformLinks . '</div>
-                            </div>
-                            <div class="card-footer text-center">
-                                <a href="edit_products.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="view_products.php?id=' . $row['id'] . '" class="btn btn-info btn-sm">View</a>
-                                <a href="delete_products.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\')">Delete</a>
-                            </div>
+                            </div>  
                         </div>
                       </div>';
             }
@@ -146,7 +141,7 @@ if (!$result) {
                         <th>Unit</th>
                         <th>Category</th>
                         <th>Platforms</th>
-                        <th>Actions</th>
+                        <!-- <th>Actions</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -174,13 +169,7 @@ if (!$result) {
                             echo '<td style="vertical-align: middle; max-width: 240px;">
                                     <div class="d-flex justify-content-center flex-wrap gap-2">' . implode('', $links) . '</div>
                                  </td>';
-                            echo '<td style="vertical-align: middle;">
-                                    <div class="d-flex justify-content-center flex-wrap gap-2" style="margin-bottom: 10px;">
-                                        <a href="edit_products.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">Edit</a>
-                                        <a href="view_products.php?id=' . $row['id'] . '" class="btn btn-info btn-sm">View</a>
-                                        <a href="delete_products.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\')">Delete</a>
-                                    </div>
-                                </td>';
+                           
                             echo '</tr>';
                         }
                     } else {

@@ -49,9 +49,11 @@ $months = [
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Invoices</title>
+    <link rel="icon" type="image/x-icon" href="asset/Logo.png">
+    <title>View Invoice</title>
+    <link href="asset/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -103,28 +105,34 @@ $months = [
                     <th>Nama Pelanggan</th>
                     <th>Nilai Kontrak</th>
                     <th>Tgl Pembuatan</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 if ($invoices->num_rows > 0) {
                     while ($row = $invoices->fetch_assoc()) {
-                        // Format the date using DateTime::format
                         $date = new DateTime($row['created_at']);
-                        $formatted_date = $date->format('d') . ' ' . $months[(int) $date->format('m')] . ' ' . $date->format('Y');  // 01 Januari 2025
-                
+                        $formatted_date = $date->format('d') . ' ' . $months[(int) $date->format('m')] . ' ' . $date->format('Y');
+
                         echo "<tr>
-                            <td>" . $row['invoice_number'] . "</td>
-                            <td>" . $row['client_name'] . "</td>
-                            <td>" . "Rp. " . number_format($row['amount'], 0, '', '.') . "</td>
-                            <td>" . $formatted_date . "</td>
-                          </tr>";
+                            <td>{$row['invoice_number']}</td>
+                            <td>{$row['client_name']}</td>
+                            <td>Rp. " . number_format($row['grand_total'], 0, '', '.') . "</td>
+                            <td>{$formatted_date}</td>
+                            <td>
+                                <a href='detail_invoice.php?id={$row['id']}' class='btn btn-info btn-sm mb-1'>Lihat</a>
+                                <a href='edit_invoice.php?id={$row['id']}' class='btn btn-warning btn-sm mb-1'>Edit</a>
+                                <a href='delete_invoice.php?id={$row['id']}' class='btn btn-danger btn-sm mb-1' onclick='return confirm(\"Yakin ingin menghapus invoice ini?\")'>Hapus</a>
+                                <a href='download_invoice.php?id={$row['id']}' class='btn btn-success btn-sm mb-1'>Download</a>
+                            </td>
+                        </tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='4' class='text-center'>No invoices found.</td></tr>";
+                    echo "<tr><td colspan='5' class='text-center'>No invoices found.</td></tr>";
                 }
                 ?>
-            </tbody>
+                </tbody>
         </table>
     </div>
 

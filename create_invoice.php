@@ -4,10 +4,38 @@ if (!isset($_SESSION['email'])) {
     header('Location: login.php');
     exit();
 }
+function bulanRomawi($bulan)
+{
+    $romawi = [
+        1 => 'I',
+        2 => 'II',
+        3 => 'III',
+        4 => 'IV',
+        5 => 'V',
+        6 => 'VI',
+        7 => 'VII',
+        8 => 'VIII',
+        9 => 'IX',
+        10 => 'X',
+        11 => 'XI',
+        12 => 'XII'
+    ];
+    return $romawi[(int) $bulan];
+}
 
 include 'config.php';
 require_once 'vendor/autoload.php';
 
+$query = $conn->query("SELECT MAX(id) as last_id FROM invoices");
+$row = $query->fetch_assoc();
+$lastId = $row['last_id'] ?? 0;
+$newId = $lastId + 1;
+
+// Buat nomor invoice
+$bulanRomawi = bulanRomawi(date('n')); // Ambil bulan sekarang
+$tahun = '2025'; // Atau date('Y') jika dinamis
+
+$nomorInvoice = $newId . '/' . $bulanRomawi . '/SSS/INV/' . $tahun;
 // Fetch product options from the database
 $product_options = '';
 $product_query = "SELECT id, name, price FROM products ORDER BY name ASC";
@@ -47,13 +75,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipping = isset($_POST['ongkir']) ? $_POST['ongkir'] : 0;
     $grand_total = $subtotal + $tax + $shipping;
 
-    $insert_sql = "INSERT INTO invoices (user_id, client_name, address, subtotal, tax, shipping, grand_total) 
-                   VALUES ('$user_id', '$client_name', '$address', '$subtotal', '$tax', '$shipping', '$grand_total')";
+    $insert_sql = "INSERT INTO invoices (user_id, invoice_number, client_name, address, subtotal, tax, shipping, grand_total) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($insert_sql);
+    $stmt->bind_param("isssdddd", $user_id, $nomorInvoice, $client_name, $address, $subtotal, $tax, $shipping, $grand_total);
+    $stmt->execute();
 
-    if ($conn->query($insert_sql) === TRUE) {
-        echo '<div class="alert alert-success">Invoice berhasil disimpan ke database.</div>';
+
+    if ($stmt->affected_rows > 0) {
+        echo '<div class="alert alert-success">Invoice berhasil disimpan ke database. Nomor Invoice: <strong>' . $nomorInvoice . '</strong></div>';
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error: " . $stmt->error;
     }
 }
 
@@ -136,10 +168,15 @@ function terbilang($angka)
                     <input type="text" name="client_name" id="client_name" class="form-control"
                         placeholder="ex. Mulia Rahmatillah" required>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="client_nik">NIK/NPWP</label>
                     <input type="text" name="client_nik" id="client_nik" class="form-control"
                         placeholder="XXXX XXXX XXXX XXXX">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="client_nik">No Invoice</label>
+                    <input type="text" name="invoice_number" id="invoice_number" class="form-control"
+                        value="<?= $nomorInvoice ?>" readonly>
                 </div>
             </div>
             <div class="form-row">

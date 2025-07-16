@@ -49,9 +49,18 @@ $stmt->close();
             <img src="<?php echo !empty($product['image_url']) ? $product['image_url'] : '../asset/no-image.png'; ?>"
                 class="card-img-top" style="height: auto; width: 130px;" alt="<?php echo $product['name']; ?>">
             <div class="card-body">
-                <h5 class="card-title"> <?php echo $product['name']; ?> </h5>
-                <p class="card-text">Harga      : Rp. <?php echo number_format($product['price'], 0, ',', '.'); ?></p>
-                <p class="card-text">Satuan      : <?php echo $product['unit']; ?></p>
+                <h2 class="card-title" style="
+                                    display: -webkit-box;
+                                    /* -webkit-line-clamp: 2; */
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    line-height: 1.2em;
+                                    height: 1.35em;
+                                "> <?php echo $product['name']; ?> </h2>
+
+                <p class="card-text">Harga : Rp. <?php echo number_format($product['price'], 0, ',', '.'); ?></p>
+                <p class="card-text">Satuan : <?php echo $product['unit']; ?></p>
                 <p class="card-text">Kategori : <?php echo $product['category']; ?></p>
 
                 <h6>Variants:</h6>
@@ -59,7 +68,8 @@ $stmt->close();
                     <ul>
                         <?php foreach ($variants as $variant) { ?>
                             <li><?php echo $variant['variant_name']; ?> - Rp.
-                                <?php echo number_format($variant['variant_price'], 0, ',', '.'); ?></li>
+                                <?php echo number_format($variant['variant_price'], 0, ',', '.'); ?>
+                            </li>
                         <?php } ?>
                     </ul>
                 <?php } else { ?>
