@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $inaproc_link = $conn->real_escape_string($_POST['inaproc_link'] ?? '');
     $siplah_link = $conn->real_escape_string($_POST['siplah_link'] ?? '');
     $blibli_link = $conn->real_escape_string($_POST['blibli_link'] ?? '');
+    $spec = $conn->real_escape_string($_POST['spec'] ?? '');
     
     // Handle file upload
     $image_url = '';
@@ -23,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insert product data
-    $sql = "INSERT INTO products (name, price, unit, category, image_url, tokopedia_link, shopee_link, inaproc_link, siplah_link, blibli_link) 
-            VALUES ('$name', '$price', '$unit', '$category', '$image_url', '$tokopedia_link', '$shopee_link', '$inaproc_link', '$siplah_link', '$blibli_link')";
+    $sql = "INSERT INTO products (name, price, unit, category, image_url, tokopedia_link, shopee_link, inaproc_link, siplah_link, blibli_link, spec) 
+            VALUES ('$name', '$price', '$unit', '$category', '$image_url', '$tokopedia_link', '$shopee_link', '$inaproc_link', '$siplah_link', '$blibli_link', '$spec')";
     
     if ($conn->query($sql) === TRUE) {
         $product_id = $conn->insert_id;

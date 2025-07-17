@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $siplah_link = $_POST['siplah_link'];
     $blibli_link = $_POST['blibli_link'];
     $category = $_POST['category'];
+    $spec = $_POST['spec'];
 
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -50,7 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 siplah_link = '$siplah_link', 
                 blibli_link = '$blibli_link', 
                 image_url = '$image_path',
-                category = '$category' 
+                category = '$category',
+                spec = '$spec'
                 WHERE id = $product_id";
     } else {
         $sql = "UPDATE products SET 
@@ -62,7 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 inaproc_link = '$inaproc_link', 
                 siplah_link = '$siplah_link', 
                 blibli_link = '$blibli_link',
-                category = '$category' 
+                category = '$category',
+                spec = '$spec'
                 WHERE id = $product_id";
     }
 
@@ -182,14 +185,16 @@ $categories = [
                 <input type="number" class="form-control" id="productPrice" name="price"
                     value="<?php echo $product['price']; ?>" required>
             </div>
-            <select class="form-select" id="productUnit" name="unit" required>
-                <?php foreach ($units as $unit): ?>
-                    <option value="<?= htmlspecialchars($unit['id']) ?>" <?= ($unit['id'] == $product['unit']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($unit['unit']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-
+            <div class="mb-3">
+                <label for="unit" class="form-label">Satuan</label>
+                <select class="form-select" id="productUnit" name="unit" required>
+                    <?php foreach ($units as $unit): ?>
+                        <option value="<?= htmlspecialchars($unit['id']) ?>" <?= ($unit['id'] == $product['unit']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($unit['unit']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <div class="mb-3">
                 <label for="productCategory" class="form-label">Kategori</label>
                 <select class="form-select" id="productCategory" name="category" required>
@@ -227,13 +232,18 @@ $categories = [
                     value="<?php echo $product['blibli_link']; ?>">
             </div>
             <div class="mb-3">
+                <label for="spec" class="form-label">Spesifikasi</label>
+                <textarea name="spec" id="spec" class="form-control" placeholder="Spesifikasi" rows="2"
+                        style="resize: vertical;"></textarea>
+            </div>
+            <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
                 <input type="file" class="form-control" id="productImage" name="image"
                     accept=".jpg, .jpeg, .png, .webp">
                 <img src="<?php echo $product['image_url']; ?>" alt="Product Image" class="img-thumbnail mt-2"
                     style="width: 150px;">
             </div>
-            <button type="submit" class="btn btn-primary w-100">Update Product</button>
+            <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 45px;">Update Product</button>
         </form>
     </div>
 

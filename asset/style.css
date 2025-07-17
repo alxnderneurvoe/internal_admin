@@ -127,7 +127,7 @@ h1 {
 }
 
 .card-img-top {
-    max-height: 200px;
+    max-height: 350px;
     object-fit: cover;
 }
 

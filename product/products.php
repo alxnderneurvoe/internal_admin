@@ -173,7 +173,7 @@ if (!$result) {
                                 $links[] = '<a href="' . $row['blibli_link'] . '" target="_blank" class="btn btn-padi btn-sm">Padi</a>';
                             echo '<tr>';
                             echo '<td style="vertical-align: middle;"><img src="' . (!empty($row['image_url']) ? $row['image_url'] : '../asset/no-image.png') . '" style="max-height: 130px;"></td>';
-                            echo '<td style="vertical-align: middle;">' . $row['name'] . '</td>';
+                            echo '<td width="25%" style="vertical-align: middle;">' . $row['name'] . '</td>';
                             echo '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; vertical-align: middle;">Rp. ' . number_format($row['price'], 0, ',', '.') . '</td>';
                             echo '<td style="vertical-align: middle;">' . $row['unit'] . '</td>';
                             echo '<td style="vertical-align: middle;">' . $row['category'] . '</td>';
@@ -264,6 +264,11 @@ if (!$result) {
                         <div class="mb-3">
                             <label for="blibliLink" class="form-label">Padi UMKM Link</label>
                             <input type="url" class="form-control" id="blibliLink" name="blibli_link">
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec" class="form-label">Spesifikasi</label>
+                            <textarea name="spec" id="spec" class="form-control" placeholder="Spesifikasi" rows="2"
+                                style="resize: vertical;"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Add Product</button>
                     </form>

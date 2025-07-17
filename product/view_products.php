@@ -47,21 +47,42 @@ $stmt->close();
         <h2 class="mb-4 text-center text-primary">Product Details</h2>
         <div class="card">
             <img src="<?php echo !empty($product['image_url']) ? $product['image_url'] : '../asset/no-image.png'; ?>"
-                class="card-img-top" style="height: auto; width: 130px;" alt="<?php echo $product['name']; ?>">
+                class="card-img max-height: 200px; align-items:center;" style="height: auto; width: 250px;">
+
             <div class="card-body">
-                <h2 class="card-title" style="
+                <h4 class="card-title" style="
                                     display: -webkit-box;
                                     /* -webkit-line-clamp: 2; */
                                     -webkit-box-orient: vertical;
                                     overflow: hidden;
+                                    font-size: 1.5em;
                                     text-overflow: ellipsis;
                                     line-height: 1.2em;
                                     height: 1.35em;
-                                "> <?php echo $product['name']; ?> </h2>
+                                "> <?php echo $product['name']; ?> </h4>
 
-                <p class="card-text">Harga : Rp. <?php echo number_format($product['price'], 0, ',', '.'); ?></p>
-                <p class="card-text">Satuan : <?php echo $product['unit']; ?></p>
-                <p class="card-text">Kategori : <?php echo $product['category']; ?></p>
+                <table class="table table-sm table-borderless" style="font-size: 18px;">
+                    <tr>
+                        <td><strong>Harga</strong></td>
+                        <td>:</td>
+                        <td>Rp. <?php echo number_format($product['price'], 0, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Satuan</strong></td>
+                        <td>: </td>
+                        <td><?php echo $product['unit']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kategori</strong></td>
+                        <td>: </td>
+                        <td><?php echo $product['category']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spesifikasi</strong></td>
+                        <td>: </td>
+                        <td><?php echo $product['spec']; ?></td>
+                    </tr>
+                </table>
 
                 <h6>Variants:</h6>
                 <?php if (!empty($variants)) { ?>

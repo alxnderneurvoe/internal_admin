@@ -16,24 +16,28 @@ function terbilang($angka)
     $angka = abs($angka);
     $bilangan = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
     $hasil = "";
+    
     if ($angka < 12) {
         $hasil = " " . $bilangan[$angka];
     } elseif ($angka < 20) {
-        $hasil = terbilang($angka - 10) . " Belas";
+        $hasil = terbilang($angka - 10) . " Belas ";
     } elseif ($angka < 100) {
-        $hasil = terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
+        $hasil = terbilang(intval($angka / 10)) . " Puluh " . terbilang($angka % 10);
     } elseif ($angka < 200) {
-        $hasil = " Seratus" . terbilang($angka - 100);
+        $hasil = " Seratus " . terbilang($angka - 100);
     } elseif ($angka < 1000) {
-        $hasil = terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
+        $hasil = terbilang(intval($angka / 100)) . " Ratus " . terbilang($angka % 100);
     } elseif ($angka < 2000) {
-        $hasil = " Seribu" . terbilang($angka - 1000);
+        $hasil = " Seribu " . terbilang($angka - 1000);
     } elseif ($angka < 1000000) {
-        $hasil = terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
+        $hasil = terbilang(intval($angka / 1000)) . " Ribu " . terbilang($angka % 1000);
     } elseif ($angka < 1000000000) {
-        $hasil = terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
+        $hasil = terbilang(intval($angka / 1000000)) . " Juta " . terbilang($angka % 1000000);
+    } elseif ($angka < 1000000000000) {
+        $hasil = terbilang(intval($angka / 1000000000)) . " Miliar " . terbilang($angka % 1000000000);
     }
-    return trim(preg_replace('/\s+/', ' ', $hasil)) . ' Rupiah';
+
+    return trim(preg_replace('/\s+/', ' ', $hasil));
 }
 
 if (!isset($_GET['id'])) {
@@ -56,7 +60,7 @@ while ($item = $items_query->fetch_assoc()) {
 $tanggal = new DateTime($invoice['created_at']);
 $formatted_date = $tanggal->format('d') . ' ' . date('F', mktime(0, 0, 0, $tanggal->format('m'))) . ' ' . $tanggal->format('Y');
 $romawi = bulanRomawi($tanggal->format('n'));
-$terbilang = terbilang($invoice['grand_total']);
+$terbilang = terbilang($invoice['grand_total']) . ' Rupiah';
 
 $basePath = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 $kopPath = $basePath . '/../asset/kop_lands.jpg';
@@ -121,7 +125,7 @@ $html = '
     <table class="no-border" width="200px" style="padding-left:650px; text-align: left;">
         <tr><td width="15%" style="text-align: left;">No Surat</td><td style="text-align: left;">: ' . $invoice['invoice_number'] . '</td></tr>
         <tr><td width="15%" style="text-align: left;">Tanggal</td><td style="text-align: left;">: ' . $formatted_date . '</td></tr>
-        <tr><td width="15%" style="text-align: left;">Kepada</td><td style="text-align: left;">: ' . $invoice['client_name'] . '</td></tr>
+        <tr><td width="15%" style="text-align: left;">Kepada</td><td style="text-align: left;">: <strong>' . $invoice['client_name'] . '</strong></td></tr>
         <tr><td width="15%" style="text-align: left;">Perihal</td><td style="text-align: left;">: Surat Penawaran Harga</td></tr>
     </table>
     <br>
@@ -145,17 +149,17 @@ foreach ($items as $item) {
     $total = $item['qty'] * $item['price'];
     $product_img = '-';
     $inaproc_link = '-';
+    $product_spec = '-';
 
     $product_id = intval($item['id_product']);
     if ($product_id > 0) {
-        $product_result = $conn->query("SELECT image_url, inaproc_link FROM products WHERE id = $product_id LIMIT 1");
+        $product_result = $conn->query("SELECT image_url, inaproc_link, spec FROM products WHERE id = $product_id LIMIT 1");
         if ($product_result && $product_result->num_rows > 0) {
             $product = $product_result->fetch_assoc();
-
             // Inaproc link
             $inaproc_link = $product['inaproc_link'] ?: '-';
-            
-
+            // Spesifikasi
+            $product_spec = $product['spec'] ?: '-';   
             // Gambar
             $imgPath = $product['image_url'];
             $fullPath = realpath($imgPath);
@@ -169,26 +173,26 @@ foreach ($items as $item) {
 
     $html .= '
         <tr>
-            <td>' . $no++ . '</td>
-            <td>' . htmlspecialchars($item['name']) . '</td>
-            <td>' . htmlspecialchars($item['spec'] ?? '-') . '</td>
-            <td>' . $product_img . '</td>
-            <td>' . ($inaproc_link !== '-' ? '<a href="' . htmlspecialchars($inaproc_link) . '" target="_blank">Link Item</a>' : '-') . '</td>
-            <td>' . $item['qty'] . ' ' . htmlspecialchars($item['unit']) . '</td>
-            <td>Rp ' . number_format($item['price'], 0, '', '.') . '</td>
-            <td>Rp ' . number_format($total, 0, '', '.') . '</td>
+            <td width="3%">' . $no++ . '</td>
+            <td width="20%">' . htmlspecialchars($item['name']) . '</td>
+            <td width="30%">' . htmlspecialchars($product_spec) . '</td>
+            <td width="20%">' . $product_img . '</td>
+            <td width="15%">' . ($inaproc_link !== '-' ? '<a href="' . htmlspecialchars($inaproc_link) . '" target="_blank">Link Item</a>' : '-') . '</td>
+            <td width="10%">' . $item['qty'] . ' ' . htmlspecialchars($item['unit']) . '</td>
+            <td width="12%">Rp ' . number_format($item['price'], 0, '', '.') . '</td>
+            <td width="13%" style="text-align: left;">Rp ' . number_format($total, 0, '', '.') . '</td>
         </tr>';
 }
 
 $html .= '
-            <tr><td colspan="7" style="text-align:right;">Subtotal</td><td>Rp ' . number_format($invoice['subtotal'], 0, '', '.') . '</td></tr>
-            <tr><td colspan="7" style="text-align:right;">PPN (11%)</td><td>Rp ' . number_format($invoice['tax'], 0, '', '.') . '</td></tr>';
+            <tr><td colspan="7" style="text-align:right;">Subtotal</td><td style="text-align: left;">Rp ' . number_format($invoice['subtotal'], 0, '', '.') . '</td></tr>
+            <tr><td colspan="7" style="text-align:right;">PPN (11%)</td><td style="text-align: left;">Rp ' . number_format($invoice['tax'], 0, '', '.') . '</td></tr>';
 
 if ($invoice['shipping'] > 0) {
-    $html .= '<tr><td colspan="7" style="text-align:right;">Ongkir</td><td>Rp ' . number_format($invoice['shipping'], 0, '', '.') . '</td></tr>';
+    $html .= '<tr><td colspan="7" style="text-align:right;">Ongkir</td><td style="text-align: left;">Rp ' . number_format($invoice['shipping'], 0, '', '.') . '</td></tr>';
 }
 
-$html .= '<tr><td colspan="7" style="text-align:right;"><strong>Grand Total</strong></td><td><strong>Rp ' . number_format($invoice['grand_total'], 0, '', '.') . '</strong></td></tr>
+$html .= '<tr><td colspan="7" style="text-align:right;"><strong>Grand Total</strong></td><td style="text-align: left;"><strong>Rp ' . number_format($invoice['grand_total'], 0, '', '.') . '</strong></td></tr>
         </tbody>
     </table>
     <p><em>Terbilang: <strong>' . $terbilang . '</strong></em></p>';
