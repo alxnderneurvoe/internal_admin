@@ -18,4 +18,4 @@ if (!$invoice) {
 <p><strong>Subtotal:</strong> Rp. <?= number_format($invoice['subtotal'], 0, ',', '.') ?></p>
 <p><strong>Pajak:</strong> Rp. <?= number_format($invoice['tax'], 0, ',', '.') ?></p>
 <p><strong>Grand Total:</strong> Rp. <?= number_format($invoice['grand_total'], 0, ',', '.') ?></p>
-<a href="view_invoice.php">Kembali</a>
+<a href="../view_letter.php">Kembali</a>

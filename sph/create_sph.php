@@ -32,11 +32,12 @@ $lastId = $row['last_id'] ?? 0;
 $newId = $lastId + 1;
 
 // Buat nomor invoice
-$bulanRomawi = bulanRomawi(date('n')); // Ambil bulan sekarang
-$tahun = '2025'; // Atau date('Y') jika dinamis
+$bulanRomawi = bulanRomawi(date('n'));
+$tahun = '2025';
+$nomorInvoice = $newId . '/' . $bulanRomawi . '/SSS/SPH/' . $tahun;
 
-$nomorInvoice = $newId . '/' . $bulanRomawi . '/SSS/INV/' . $tahun;
-// Fetch product options from the database
+$status = 'SPH';
+
 $product_options = '';
 $product_query = "SELECT id, name, price FROM products ORDER BY name ASC";
 $product_result = $conn->query($product_query);
@@ -49,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $client_nik = mysqli_real_escape_string($conn, $_POST['client_nik']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $user_email = $_SESSION['email'];
+    $delivery_time = $_POST['delivery_time'];
+    $delivery_unit = $_POST['delivery_unit'];
 
     $user_query = "SELECT id FROM users WHERE email = '$user_email'";
     $result = $conn->query($user_query);
@@ -75,20 +78,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipping = isset($_POST['ongkir']) ? $_POST['ongkir'] : 0;
     $grand_total = $subtotal + $tax + $shipping;
 
-    $insert_sql = "INSERT INTO invoices (user_id, invoice_number, client_name, address, subtotal, tax, shipping, grand_total) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $insert_sql = "INSERT INTO invoices (user_id, invoice_number, client_name, address, subtotal, tax, shipping, grand_total, status, delivery_time, delivery_unit) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($insert_sql);
-    $stmt->bind_param("isssdddd", $user_id, $nomorInvoice, $client_name, $address, $subtotal, $tax, $shipping, $grand_total);
+    $stmt->bind_param("isssddddsss", $user_id, $nomorInvoice, $client_name, $address, $subtotal, $tax, $shipping, $grand_total, $status, $delivery_time, $delivery_unit);
     $stmt->execute();
 
 
     if ($stmt->affected_rows > 0) {
-        echo '<div class="alert alert-success">Invoice berhasil disimpan ke database. Nomor Invoice: <strong>' . $nomorInvoice . '</strong></div>';
+        echo '<div class="alert alert-success">Penawaran berhasil disimpan ke database. Nomor SPH: <strong>' . $nomorInvoice . '</strong></div>';
     } else {
         echo "Error: " . $stmt->error;
     }
 
-    $invoice_id = $conn->insert_id; // ID invoice yang baru dibuat
+    $invoice_id = $conn->insert_id;
     foreach ($items as $item) {
         $item_name = mysqli_real_escape_string($conn, $item['name']);
         $item_qty = $item['qty'];
@@ -96,9 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $item_discount = $item['discount'];
         $item_unit = mysqli_real_escape_string($conn, $item['unit']);
         $item_net = $item['net'];
+        $item_idproduct = intval($item['id'] ?? 0); // Ambil ID produk dari item (pastikan dikirim dari form)
 
-        $conn->query("INSERT INTO invoice_items (invoice_id, name, qty, price, discount, unit, net) 
-        VALUES ('$invoice_id', '$item_name', '$item_qty', '$item_price', '$item_discount', '$item_unit', '$item_net')");
+        $conn->query("INSERT INTO invoice_items (invoice_id, id_product, name, qty, price, discount, unit, net) 
+        VALUES ('$invoice_id', '$item_idproduct', '$item_name', '$item_qty', '$item_price', '$item_discount', '$item_unit', '$item_net')");
     }
 
 }
@@ -174,8 +178,8 @@ function terbilang($angka)
     </nav>
 
     <div class="container mt-4">
-        <h2 class="mb-4">Create Invoice</h2>
-        <form action="create_invoice.php" method="post" id="invoiceForm">
+        <h2 class="mb-4">Create Penawaran</h2>
+        <form action="create_sph.php" method="post" id="invoiceForm">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="client_name">Nama Pelanggan</label>
@@ -194,10 +198,24 @@ function terbilang($angka)
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="address" style="font-weight: bold;">Alamat</label>
-                    <textarea name="address" id="address" class="form-control" placeholder="Alamat" required rows="2"
+                <div class="form-group col-md-9">
+                    <label for=" address" style="font-weight: bold;">Alamat</label>
+                    <textarea name="address" id="address" class="form-control" placeholder="Alamat" rows="1"
                         style="resize: vertical;"></textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="delivery_time">Waktu Pengiriman</label>
+                    <div class="input-group">
+                        <input type="text" name="delivery_time" id="delivery_time" class="form-control" min="0" required
+                            style="min-width: 35px;" value="0">
+                        <div class="input-group-append">
+                            <select name="delivery_unit" id="delivery_unit" class="form-control" required>
+                                <option value="hari">Hari</option>
+                                <option value="minggu">Minggu</option>
+                                <option value="bulan">Bulan</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <button type="button" class="btn btn-info mb-3" data-toggle="modal" data-target="#addItemModal">Tambah

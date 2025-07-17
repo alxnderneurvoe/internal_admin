@@ -113,12 +113,12 @@ if ($result) {
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total
-                                        Invoices</div>
+                                        Letters</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_invoices; ?>
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="invoice/view_invoice.php" class="btn btn-primary btn-lg">View</a>
+                                    <a href="view_letter.php" class="btn btn-primary btn-lg">View</a>
                                 </div>
                             </div>
                         </div>

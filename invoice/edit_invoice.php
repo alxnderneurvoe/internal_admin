@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare("UPDATE invoices SET client_name=?, address=? WHERE id=?");
     $stmt->bind_param("ssi", $client_name, $address, $id);
     if ($stmt->execute()) {
-        echo "<script>alert('Invoice berhasil diupdate.'); window.location='view_invoice.php';</script>";
+        echo "<script>alert('Invoice berhasil diupdate.'); window.location='../view_letter.php';</script>";
     } else {
         echo "Gagal update.";
     }
@@ -35,4 +35,4 @@ $data = $result->fetch_assoc();
     <textarea name="address" class="form-control"><?= htmlspecialchars($data['address']) ?></textarea>
     <button class="btn btn-success mt-2">Simpan</button>
 </form>
-<a href="view_invoice.php" class="btn btn-secondary mt-2">Kembali</a>
+<a href="../view_letter.php" class="btn btn-secondary mt-2">Kembali</a>

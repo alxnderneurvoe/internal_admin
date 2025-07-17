@@ -34,6 +34,7 @@ $newId = $lastId + 1;
 // Buat nomor invoice
 $bulanRomawi = bulanRomawi(date('n')); // Ambil bulan sekarang
 $tahun = '2025'; // Atau date('Y') jika dinamis
+$status = 'INV';
 
 $nomorInvoice = $newId . '/' . $bulanRomawi . '/SSS/INV/' . $tahun;
 // Fetch product options from the database
@@ -49,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $client_nik = mysqli_real_escape_string($conn, $_POST['client_nik']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $user_email = $_SESSION['email'];
+    $rek = isset($_POST['rek']) && $_POST['rek'] == '1' ? 1 : 0;
+
 
     $user_query = "SELECT id FROM users WHERE email = '$user_email'";
     $result = $conn->query($user_query);
@@ -75,10 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipping = isset($_POST['ongkir']) ? $_POST['ongkir'] : 0;
     $grand_total = $subtotal + $tax + $shipping;
 
-    $insert_sql = "INSERT INTO invoices (user_id, invoice_number, client_name, address, subtotal, tax, shipping, grand_total) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $insert_sql = "INSERT INTO invoices (user_id, invoice_number, client_name, address, subtotal, tax, shipping, grand_total, status, rek) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($insert_sql);
-    $stmt->bind_param("isssdddd", $user_id, $nomorInvoice, $client_name, $address, $subtotal, $tax, $shipping, $grand_total);
+    $stmt->bind_param("isssddddsi", $user_id, $nomorInvoice, $client_name, $address, $subtotal, $tax, $shipping, $grand_total, $status, $rek);
     $stmt->execute();
 
 
@@ -194,10 +197,17 @@ function terbilang($angka)
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="address" style="font-weight: bold;">Alamat</label>
+                <div class="form-group col-md-10">
+                    <label for=" address" style="font-weight: bold;">Alamat</label>
                     <textarea name="address" id="address" class="form-control" placeholder="Alamat" required rows="2"
                         style="resize: vertical;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rek">Rekening</label>
+                    <select name="rek" id="rek" class="form-control" required>
+                        <option value="1">Kantor</option>
+                        <option value="0">Pribadi</option>
+                    </select>
                 </div>
             </div>
             <button type="button" class="btn btn-info mb-3" data-toggle="modal" data-target="#addItemModal">Tambah

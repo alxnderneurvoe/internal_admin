@@ -85,7 +85,7 @@ if (!isset($_SESSION['email'])) {
                     <div class="card-body text-center">
                         <h5 class="card-title">Penawaran</h5>
                         <p class="card-text">Create a new penawaran (offer).</p>
-                        <a href="create_penawaran.php" class="btn btn-success">Create Penawaran</a>
+                        <a href="sph/create_sph.php" class="btn btn-success">Create Penawaran</a>
                     </div>
                 </div>
             </div>

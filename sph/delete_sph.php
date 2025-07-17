@@ -3,7 +3,7 @@ include '../config.php';
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
     $conn->query("DELETE FROM invoices WHERE id = $id");
-    header("Location: view_invoice.php");
+    header("Location: ../view_letter.php");
     exit();
 } else {
     echo "ID tidak valid.";

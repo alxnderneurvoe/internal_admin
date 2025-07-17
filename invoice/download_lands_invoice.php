@@ -114,7 +114,7 @@ th, td {
 
 $html .= '<table class="no-border">
 <tr><td>Nomor</td><td>: ' . $invoice['invoice_number'] . '</td></tr>
-<tr><td>Perihal</td><td>: Penawaran Harga</td></tr>
+<tr><td>Perihal</td><td>: Invoice</td></tr>
 </table>
 
 <p>Kepada Yth.<br><strong>' . $invoice['client_name'] . '</strong><br>' . $invoice['address'] . '</p>';
@@ -135,21 +135,32 @@ foreach ($items as $item) {
 
 $html .= '<tr><td colspan="4" style="text-align:right;">Subtotal</td><td>Rp. ' . number_format($invoice['subtotal'], 0, '', '.') . '</td></tr>';
 $html .= '<tr><td colspan="4" style="text-align:right;">PPN 11%</td><td>Rp. ' . number_format($invoice['tax'], 0, '', '.') . '</td></tr>';
+
+if ($invoice['shipping'] > 0) {
+    $html .= '<tr><td colspan="4" style="text-align:right;">Ongkir</td><td>Rp. ' . number_format($invoice['shipping'], 0, '', '.') . '</td></tr>';
+}
+
 $html .= '<tr><td colspan="4" style="text-align:right; font-weight: bold;">Grand Total</td><td>Rp. ' . number_format($invoice['grand_total'], 0, '', '.') . '</td></tr>';
 $html .= '</tbody></table>';
 
 $html .= '<p><em>Terbilang : <strong>' . $terbilang . '</strong></em></p>';
 
-$html .= '<div class="note">
-<p>Catatan :</p>
-<ol>
-<li>Penawaran ini berlaku 10 hari setelah penawaran dibuat</li>
-<li>Harga dapat berubah sewaktu-waktu</li>
-<li>Harga belum termasuk ongkir</li>
-<li>Pembayaran dapat dilakukan sejak invoice diterbitkan</li>
-<li>Untuk pemesanan lebih lanjut hubungi <strong>PT SEMESTA SISTEM SOLUSINDO</strong> <br>+62 811-1933-077 (Rahmad Saputra)</li>
-</ol>
-</div>';
+if ($invoice['rek'] == 1) {
+    $html .= '<div class="note" style="margin-top: 5px;">
+        <p style="height: 0;">Pembayaran dapat dilakukan melalui transfer ke rekening berikut:</p>
+        <h4 style="margin: 1rem 0 0 0;">An. PT SEMESTA SISTEM SOLUSINDO</h4>
+        <h4 style="margin: 1px 0 0 0;">BANK RAKYAT INDONESIA (BRI)</h4>
+        <h3 style="margin: 1px 0 0 0;">00180-100-446-8308</h3>
+        </div>';
+} else {
+    $html .= '<div class="note" style="margin-top: 5px;">
+        <p style="height: 0;">Pembayaran dapat dilakukan melalui transfer ke rekening berikut:</p>
+        <h4 style="margin: 1rem 0 0 0;">A.n RAHMAD SAPUTRA</h4>
+        <h4 style="margin: 1px 0 0 0;">BANK CENTRAL ASIA (BCA)</h4>
+        <h3 style="margin: 1px 0 0 0;">7660 4375 54</h3>
+        </div>';
+}
+
 
 $html .= '<p style="text-align:right;">Jakarta, ' . $formatted_date . '<br><br>
 <img src="' . $ttdPath . '" width="150"><br>
