@@ -16,7 +16,7 @@ function terbilang($angka)
     $angka = abs($angka);
     $bilangan = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
     $hasil = "";
-    
+
     if ($angka < 12) {
         $hasil = " " . $bilangan[$angka];
     } elseif ($angka < 20) {
@@ -87,9 +87,16 @@ $html = '
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: top left;
-            padding: 20px 50px 60px 60px;
-            // top btom left right
+            padding: 20px 0px 0px 20px;
+            
         }
+        .header-info {
+            padding: 0px 0px 0px 20px;
+        }
+        .table-container {
+            // page-break-before: always;
+            padding: 60px 50px 40px 40px;
+            // top bottom right left
         }
         h2, h4 {
             text-align: center;
@@ -121,29 +128,21 @@ $html = '
     </style>
 </head>
 <body>
-    <br>
-    <table class="no-border" width="200px" style="padding-left:650px; text-align: left;">
-        <tr><td width="15%" style="text-align: left;">No Surat</td><td style="text-align: left;">: ' . $invoice['invoice_number'] . '</td></tr>
-        <tr><td width="15%" style="text-align: left;">Tanggal</td><td style="text-align: left;">: ' . $formatted_date . '</td></tr>
-        <tr><td width="15%" style="text-align: left;">Kepada</td><td style="text-align: left;">: <strong>' . $invoice['client_name'] . '</strong></td></tr>
-        <tr><td width="15%" style="text-align: left;">Perihal</td><td style="text-align: left;">: Surat Penawaran Harga</td></tr>
-    </table>
-    <br>
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Barang</th>
-                <th>Spesifikasi</th>
-                <th>Gambar</th>
-                <th>Link</th>
-                <th>Qty</th>
-                <th>Harga</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>';
-
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Barang</th>
+                    <th>Spesifikasi</th>
+                    <th>Gambar</th>
+                    <th>Link</th>
+                    <th>Qty</th>
+                    <th>Harga</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>';
 $no = 1;
 foreach ($items as $item) {
     $total = $item['qty'] * $item['price'];
@@ -159,7 +158,7 @@ foreach ($items as $item) {
             // Inaproc link
             $inaproc_link = $product['inaproc_link'] ?: '-';
             // Spesifikasi
-            $product_spec = $product['spec'] ?: '-';   
+            $product_spec = $product['spec'] ?: '-';
             // Gambar
             $imgPath = $product['image_url'];
             $fullPath = realpath($imgPath);

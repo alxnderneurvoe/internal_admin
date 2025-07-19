@@ -26,6 +26,14 @@ if ($result) {
     $total_invoices = 0;
 }
 
+$query = "SELECT SUM(grand_total) AS total_earnings FROM invoices WHERE status = 'INV'";
+$result = $conn->query($query);
+$total_earnings = 0;
+
+if ($result && $row = $result->fetch_assoc()) {
+    $total_earnings = $row['total_earnings'];
+}
+
 $sql = "SELECT COUNT(*) AS total_files FROM files";
 $result = $conn->query($sql);
 
@@ -131,7 +139,9 @@ if ($result) {
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total
                                         Earnings</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rp. 0</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        Rp. <?= number_format($total_earnings, 0, ',', '.') ?>
+                                    </div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -140,7 +150,6 @@ if ($result) {
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card shadow h-100 py-2">
                         <div class="card-body">

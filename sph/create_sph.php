@@ -142,7 +142,7 @@ function terbilang($angka)
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../asset/Logo.png">
-    <title>Create Invoice</title>
+    <title>Create Penawaran</title>
     <link href="asset/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -231,6 +231,7 @@ function terbilang($angka)
                             <th style="width: 10%">Disc.</th>
                             <th style="width: 15%">Net</th>
                             <th style="width: 20%">Total</th>
+                            <th style="width: 5%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="items_table_body"></tbody>
@@ -240,13 +241,13 @@ function terbilang($angka)
                 <div class="col-md-3">
                     <div class="card p-2">
                         <label for="subtotal">Sub Total</label>
-                        <p class="font-weight-bold mb-0"><span id="subtotal">0</span></p>
+                        <p class="font-weight-bold mb-0"><span id="subtotal">Rp. 0</span></p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card p-2">
                         <label for="tax">Pajak (11%)</label>
-                        <p class="font-weight-bold mb-0"><span id="tax">0</span></p>
+                        <p class="font-weight-bold mb-0"><span id="tax">Rp. 0</span></p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -259,7 +260,7 @@ function terbilang($angka)
                 <div class="col-md-3">
                     <div class="card p-2">
                         <label for="grand_total">Grand Total</label>
-                        <p class="font-weight-bold mb-0"><span id="grand_total">0</span></p>
+                        <p class="font-weight-bold mb-0"><span id="grand_total">Rp. 0</span></p>
                     </div>
                 </div>
             </div>
@@ -268,6 +269,7 @@ function terbilang($angka)
         </form>
     </div>
 
+    <!-- Tambah Item Modal -->
     <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -330,7 +332,7 @@ function terbilang($angka)
                 const qty = parseFloat($(this).find(".qty").val());
                 const price = parseFloat($(this).find(".price").val());
                 const discount = parseFloat($(this).find(".discount").val());
-                const net = (qty * price) - (qty * price * (discount / 100));
+                const net = Math.ceil((qty * price) - (qty * price * (discount / 100)));
                 const total = net;
                 subtotal += total;
                 $(this).find(".net").text("Rp. " + net.toLocaleString('id-ID'));
@@ -345,13 +347,18 @@ function terbilang($angka)
                 }
             });
 
-            const tax = subtotal * 0.11;
+            const tax = Math.ceil(subtotal * 0.11);
             const shipping = parseFloat($('#ongkir').val());
-            const grandTotal = subtotal + tax + shipping;
+            const grandTotal = Math.ceil(subtotal + tax + shipping);
 
-            $('#subtotal').text(subtotal.toLocaleString('id-ID'));
-            $('#tax').text(tax.toLocaleString('id-ID'));
-            $('#grand_total').text(grandTotal.toLocaleString('id-ID'));
+            $('#subtotal').text("Rp. " + subtotal.toLocaleString('id-ID'));
+            $('#tax').text("Rp. " + tax.toLocaleString('id-ID'));
+            $('#grand_total').text("Rp. " + grandTotal.toLocaleString('id-ID'));
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1); // Hapus dari array
+            renderItems(); // Render ulang
         }
 
         // Harga otomatis terisi saat produk dipilih
@@ -383,18 +390,56 @@ function terbilang($angka)
 
             const row = `<tr>
                 <td>${itemCount}</td>
-                <td><input type="text" class="form-control" value="${itemName}" readonly></td>
+                <td>${itemName}</td>
                 <td><input type="number" class="form-control qty" value="${itemQty}" onchange="updateGrandTotal()"></td>
                 <td><input type="number" class="form-control price" value="${itemPrice}" onchange="updateGrandTotal()"></td>
                 <td><input type="number" class="form-control discount" value="${itemDiscount}" onchange="updateGrandTotal()"></td>
                 <td class="net">Rp. ${net.toLocaleString('id-ID')}</td>
                 <td class="total">Rp. ${net.toLocaleString('id-ID')}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removeItem(${items.length - 1})">&times;</button>
+                </td>
             </tr>`;
 
             $("#items_table_body").append(row);
             updateGrandTotal();
             $('#addItemModal').modal('hide');
         });
+
+        function renderItems() {
+            let html = '';
+            itemCount = 0; // Reset item count
+            $("#items_table_body").empty();
+
+            items.forEach((item, index) => {
+                itemCount++;
+                const net = Math.ceil(item.qty * item.price - (item.qty * item.price * (item.discount / 100)));
+
+                html += `<tr>
+            <td>${itemCount}</td>
+            <td>${item.name}</td>
+            <td><input type="number" class="form-control qty" value="${item.qty}" onchange="updateItem(${index}, 'qty', this.value)"></td>
+            <td><input type="number" class="form-control price" value="${item.price}" onchange="updateItem(${index}, 'price', this.value)"></td>
+            <td><input type="number" class="form-control discount" value="${item.discount}" onchange="updateItem(${index}, 'discount', this.value)"></td>
+            <td class="net">Rp. ${net.toLocaleString('id-ID')}</td>
+            <td class="total">Rp. ${net.toLocaleString('id-ID')}</td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeItem(${index})">&times;</button>
+            </td>
+        </tr>`;
+            });
+
+            $("#items_table_body").html(html);
+            updateGrandTotal();
+        }
+
+        function updateItem(index, field, value) {
+            items[index][field] = parseFloat(value);
+            items[index].net = Math.ceil(items[index].qty * items[index].price - (items[index].qty * items[index].price * (items[index].discount / 100)));
+            renderItems();
+        }
+
+
 
         // Serialize items before submitting the form
         $("#invoiceForm").submit(function (e) {

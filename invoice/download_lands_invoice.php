@@ -176,3 +176,12 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream('Invoice_' . $invoice['invoice_number'] . '.pdf', ['Attachment' => 0]);
 exit();
+
+// <div class="header-info">
+//         <table class="no-border" width="200px" style="padding-left:650px; text-align: left;">
+//             <tr><td width="15%" style="text-align: left;">No Surat</td><td style="text-align: left;">: ' . $invoice['invoice_number'] . '</td></tr>
+//             <tr><td width="15%" style="text-align: left;">Tanggal</td><td style="text-align: left;">: ' . $formatted_date . '</td></tr>
+//             <tr><td width="15%" style="text-align: left;">Kepada</td><td style="text-align: left;">: <strong>' . $invoice['client_name'] . '</strong></td></tr>
+//             <tr><td width="15%" style="text-align: left;">Perihal</td><td style="text-align: left;">: Surat Penawaran Harga</td></tr>
+//         </table>
+//     </div>

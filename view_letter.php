@@ -44,18 +44,42 @@ while ($row = $invoices->fetch_assoc()) {
 usort($letters, function ($a, $b) {
     return strtotime($b['created_at']) - strtotime($a['created_at']);
 });
+
+$search = mysqli_real_escape_string($conn, $_GET['search'] ?? '');
+$status_filter = $_GET['status'] ?? '';
+$start_date = $_GET['start_date'] ?? '';
+$end_date = $_GET['end_date'] ?? '';
+
+$sql = "SELECT id, invoice_number AS number, client_name, grand_total, status, created_at, 'invoice' AS type FROM invoices WHERE user_id = '$user_id'";
+
+if (!empty($search)) {
+    $sql .= " AND client_name LIKE '%$search%'";
+}
+if (!empty($status_filter)) {
+    $sql .= " AND status = '$status_filter'";
+}
+if (!empty($start_date)) {
+    $sql .= " AND DATE(created_at) >= '$start_date'";
+}
+if (!empty($end_date)) {
+    $sql .= " AND DATE(created_at) <= '$end_date'";
+}
+
+$sql .= " ORDER BY created_at DESC";
+$invoices = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Letters</title>
     <link href="asset/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sb-admin-2@4.0.3/dist/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 
 <body>
@@ -75,6 +99,18 @@ usort($letters, function ($a, $b) {
 
     <div class="container">
         <h2>All Letters</h2>
+        <form id="filter-form" class="form-inline mb-3">
+            <input type="text" name="search" class="form-control mr-2" placeholder="Cari pelanggan...">
+            <select name="status" class="form-control mr-2">
+                <option value="">Semua</option>
+                <option value="INV">Invoice</option>
+                <option value="SPH">SPH</option>
+            </select>
+            <input type="date" name="start_date" class="form-control mr-2">
+            <input type="date" name="end_date" class="form-control mr-2">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="view_letter.php" class="btn btn-secondary ml-2">Reset</a>
+        </form>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -86,7 +122,7 @@ usort($letters, function ($a, $b) {
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="letters-table-body">
                 <?php foreach ($letters as $row): ?>
                     <?php
                     $type = strtoupper($row['status']);
@@ -130,6 +166,30 @@ usort($letters, function ($a, $b) {
                         </td>
                     </tr>
                 <?php endforeach; ?>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    function loadLetters() {
+                        $.ajax({
+                            url: 'filter_letters.php',
+                            type: 'GET',
+                            data: $('#filter-form').serialize(),
+                            success: function (data) {
+                                $('#letters-table-body').html(data);
+                            }
+                        });
+                    }
+
+                    // Load default data saat halaman dibuka
+                    $(document).ready(function () {
+                        loadLetters();
+
+                        $('#filter-form').on('submit', function (e) {
+                            e.preventDefault();
+                            loadLetters();
+                        });
+                    });
+                </script>
+
             </tbody>
         </table>
     </div>
