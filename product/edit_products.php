@@ -107,25 +107,38 @@ $units = [
 
 $categories = [
     ['id' => '', 'category' => 'Pilih Kategori'],
+    ['id' => 'Aksesoris Pendukung Komputer', 'category' => 'Aksesoris Pendukung Komputer'],
     ['id' => 'Aksesoris Perangkat Jaringan', 'category' => 'Aksesoris Perangkat Jaringan'],
+    ['id' => 'Alat Peraga - Hortukultura', 'category' => 'Alat Peraga - Hortukultura'],
+    ['id' => 'Alat Peraga - Kapal Penangkap Ikan', 'category' => 'Alat Peraga - Kapal Penangkap Ikan'],
+    ['id' => 'Alat Peraga - Keahlian Kriya Kreatif Kayu dan Rotan', 'category' => 'Alat Peraga - Keahlian Kriya Kreatif Kayu dan Rotan'],
+    ['id' => 'Alat Peraga - Keahlian Tata Busana', 'category' => 'Alat Peraga - Keahlian Tata Busana'],
+    ['id' => 'Alat Peraga - Kesehatan Hewan', 'category' => 'Alat Peraga - Kesehatan Hewan'],
+    ['id' => 'Alat Peraga - Mek. Pertanian', 'category' => 'Alat Peraga - Mek. Pertanian'],
+    ['id' => 'Alat Peraga - Olah Hasil  Ikan', 'category' => 'Alat Peraga - Olah Hasil  Ikan'],
+    ['id' => 'Alat Peraga - Pengolahan Hasil Pertanian', 'category' => 'Alat Peraga - Pengolahan Hasil Pertanian'],
+    ['id' => 'Alat Peraga - Perbenihan Tanaman', 'category' => 'Alat Peraga - Perbenihan Tanaman'],
+    ['id' => 'Alat Peraga - Perhotelan', 'category' => 'Alat Peraga - Perhotelan'],
+    ['id' => 'Alat Peraga - Perikanan Air Tawar', 'category' => 'Alat Peraga - Perikanan Air Tawar'],
+    ['id' => 'Alat Peraga - Teknik Audio Video', 'category' => 'Alat Peraga - Teknik Audio Video'],
     ['id' => 'Alat Peraga Edukatif', 'category' => 'Alat Peraga Edukatif'],
     ['id' => 'Buku Pendidikan', 'category' => 'Buku Pendidikan'],
     ['id' => 'Furnitur Kantor/Sekolah', 'category' => 'Furnitur Kantor/Sekolah'],
-    ['id' => 'Laptop/PC/AiO', 'category' => 'Laptop/PC/AiO'],
-    ['id' => 'Aksesoris Pendukung Komputer', 'category' => 'Aksesoris Pendukung Komputer'],
     ['id' => 'Lampu Jalan/PJUTS', 'category' => 'Lampu Jalan/PJUTS'],
+    ['id' => 'Laptop/PC/AiO', 'category' => 'Laptop/PC/AiO'],
     ['id' => 'Meja dan Kursi Guru', 'category' => 'Meja dan Kursi Guru'],
-    ['id' => 'Meja dan Kursi Siswa', 'category' => 'Meja dan Kursi Siswa'],
     ['id' => 'Meja dan Kursi Paud', 'category' => 'Meja dan Kursi Paud'],
+    ['id' => 'Meja dan Kursi Siswa', 'category' => 'Meja dan Kursi Siswa'],
     ['id' => 'Mesin Industri', 'category' => 'Mesin Industri'],
     ['id' => 'Mesin Jahit', 'category' => 'Mesin Jahit'],
     ['id' => 'Mesin Welding Pipe', 'category' => 'Mesin Welding Pipe'],
+    ['id' => 'Paket SR Perpipaan', 'category' => 'Paket SR Perpipaan'],
     ['id' => 'Pipa dan Fitting HDPE', 'category' => 'Pipa dan Fitting HDPE'],
     ['id' => 'Pipa dan Fitting Limbah', 'category' => 'Pipa dan Fitting Limbah'],
     ['id' => 'Pipa dan Fitting PPR', 'category' => 'Pipa dan Fitting PPR'],
-    ['id' => 'Pipa dan Fitting PVC', 'category' => 'Pipa dan Fitting PVC'],
-    ['id' => 'Paket SR Perpipaan', 'category' => 'Paket SR Perpipaan']
+    ['id' => 'Pipa dan Fitting PVC', 'category' => 'Pipa dan Fitting PVC']
 ];
+
 ?>
 
 <!DOCTYPE html>
