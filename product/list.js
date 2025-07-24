@@ -7,7 +7,7 @@ const Category = [
     { id: "Buku Pendidikan", name: "Buku Pendidikan" },
     { id: "Furnitur Kantor/Sekolah", name: "Furnitur Kantor/Sekolah" },
     { id: "Laptop/PC/AiO", name: "Laptop/PC/AiO" },
-    { id: "Laptop", name: "Laptop" },
+    { id: "Aksesoris Pendukung Komputer", name: "Aksesoris Pendukung Komputer" },
     { id: "Lampu Jalan/PJUTS", name: "Lampu Jalan/PJUTS" },
     { id: "Mesin Industri", name: "Mesin Industri" },
     { id: "Meja dan Kursi Guru", name: "Meja dan Kursi Guru" },

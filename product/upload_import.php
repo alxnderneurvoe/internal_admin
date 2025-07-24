@@ -27,6 +27,7 @@ if (isset($_POST['import']) && isset($_FILES['csv_file'])) {
         $tokopedia_link = $row[6] ?? '';
         $shopee_link = $row[7] ?? '';
         $blibli_link = $row[8] ?? '';
+        $spec = $row[9] ?? '';
 
         if (trim($name) == '') {
             $skipped++;
@@ -41,7 +42,7 @@ if (isset($_POST['import']) && isset($_FILES['csv_file'])) {
 
         if ($check->num_rows == 0) {
             // Insert produk baru
-            $stmt = $conn->prepare("INSERT INTO products (name, price, unit, category, inaproc_link, tokopedia_link, shopee_link, siplah_link, blibli_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO products (name, price, unit, category, inaproc_link, tokopedia_link, shopee_link, siplah_link, blibli_link, spec) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("sisssssss", $name, $price, $unit, $category, $inaproc_link, $tokopedia_link, $shopee_link, $siplah_link, $blibli_link);
             $stmt->execute();
             $success++;
