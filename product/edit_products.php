@@ -100,6 +100,7 @@ $units = [
     ['id' => 'Meter', 'unit' => 'Meter'],
     ['id' => 'Unit', 'unit' => 'Unit'],
     ['id' => 'Paket', 'unit' => 'Paket'],
+    ['id' => 'Set', 'unit' => 'Set'],
     ['id' => 'Roll-50m', 'unit' => 'Roll-50m'],
     ['id' => 'Roll-100m', 'unit' => 'Roll-100m'],
 ];
@@ -140,7 +141,6 @@ $categories = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="list.js"></script>
     <link rel="stylesheet" href="../asset/style.css">
 </head>
 

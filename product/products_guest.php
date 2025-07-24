@@ -169,7 +169,7 @@ if (!$result) {
                             echo '<td style="vertical-align: middle; max-width: 240px;">
                                     <div class="d-flex justify-content-center flex-wrap gap-2">' . implode('', $links) . '</div>
                                  </td>';
-                           
+
                             echo '</tr>';
                         }
                     } else {
@@ -255,8 +255,76 @@ if (!$result) {
         </div>
     </div>
 
-    <script src="list.js"></script>
     <script>
+        const Category = [
+            { id: "", name: "Pilih Kategori" },
+            { id: "Aksesoris Pendukung Komputer", name: "Aksesoris Pendukung Komputer" },
+            { id: "Aksesoris Perangkat Jaringan", name: "Aksesoris Perangkat Jaringan" },
+            { id: "Alat Peraga Edukatif", name: "Alat Peraga Edukatif" },
+            { id: "Buku Pendidikan", name: "Buku Pendidikan" },
+            { id: "Furnitur Kantor/Sekolah", name: "Furnitur Kantor/Sekolah" },
+            { id: "Laptop/PC/AiO", name: "Laptop/PC/AiO" },
+            { id: "Lampu Jalan/PJUTS", name: "Lampu Jalan/PJUTS" },
+            { id: "Mesin Industri", name: "Mesin Industri" },
+            { id: "Meja dan Kursi Guru", name: "Meja dan Kursi Guru" },
+            { id: "Meja dan Kursi Siswa", name: "Meja dan Kursi Siswa" },
+            { id: "Meja dan Kursi Paud", name: "Meja dan Kursi Paud" },
+            { id: "Mesin Welding Pipe", name: "Mesin Welding Pipe" },
+            { id: "Pipa dan Fitting HDPE", name: "Pipa dan Fitting HDPE" },
+            { id: "Pipa dan Fitting Limbah", name: "Pipa dan Fitting Limbah" },
+            { id: "Pipa dan Fitting PPR", name: "Pipa dan Fitting PPR" },
+            { id: "Pipa dan Fitting PVC", name: "Pipa dan Fitting PVC" },
+            { id: "Paket SR Perpipaan", name: "Paket SR Perpipaan" },
+        ];
+
+        const unit = [
+            { id: "", name: "Pilih Satuan" },
+            { id: "Batang", name: "Batang" },
+            { id: "Pcs", name: "Pcs" },
+            { id: "Meter", name: "Meter" },
+            { id: "Unit", name: "Unit" },
+            { id: "Paket", name: "Paket" },
+            { id: "Set", name: "Set" },
+            { id: "Roll-50m", name: "Roll-50m" },
+            { id: "Roll-100m", name: "Roll-100m" },
+        ];
+
+        function loadCategoryFilter() {
+            const select = document.getElementById("category-select");
+            Category.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat.id;
+                option.textContent = cat.name;
+
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('category') === cat.id) {
+                    option.selected = true;
+                }
+
+                select.appendChild(option);
+            });
+        }
+
+        function loadCategory() {
+            const CategorySelect = document.getElementById("productCategory");
+            Category.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat.id;
+                option.textContent = cat.name;
+                CategorySelect.appendChild(option);
+            });
+        }
+
+        function loadUnit() {
+            const unitSelect = document.getElementById("productUnit");
+            unit.forEach(u => {
+                const option = document.createElement("option");
+                option.value = u.id;
+                option.textContent = u.name;
+                unitSelect.appendChild(option);
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             loadCategory();
             loadUnit();

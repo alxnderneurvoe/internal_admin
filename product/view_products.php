@@ -35,7 +35,6 @@ $stmt->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="list.js"></script>
     <link rel="stylesheet" href="../asset/style.css">
 </head>
 
