@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (isset($_POST['import']) && isset($_FILES['csv_file'])) {
     include '../config.php';
 
@@ -18,7 +23,7 @@ if (isset($_POST['import']) && isset($_FILES['csv_file'])) {
     $skipped = 0;
 
     while (($row = fgetcsv($csv, 1000, ',')) !== false) {
-        $name = $row[0] ?? '';
+        $name = trim($row[0] ?? '');
         $category = $row[1] ?? '';
         $unit = $row[2] ?? '';
         $price = (int) ($row[3] ?? 0);
@@ -41,13 +46,15 @@ if (isset($_POST['import']) && isset($_FILES['csv_file'])) {
         $check->store_result();
 
         if ($check->num_rows == 0) {
-            // Insert produk baru
-            $stmt = $conn->prepare("INSERT INTO products (name, price, unit, category, inaproc_link, tokopedia_link, shopee_link, siplah_link, blibli_link, spec) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sisssssss", $name, $price, $unit, $category, $inaproc_link, $tokopedia_link, $shopee_link, $siplah_link, $blibli_link);
-            $stmt->execute();
-            $success++;
-        } else {
-            $skipped++;
+            $stmt = $conn->prepare("INSERT INTO products (name, price, unit, category, inaproc_link, tokopedia_link, shopee_link, siplah_link, blibli_link, spec) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sissssssss", $name, $price, $unit, $category, $inaproc_link, $tokopedia_link, $shopee_link, $siplah_link, $blibli_link, $spec);
+
+            if ($stmt->execute()) {
+                $success++;
+            } else {
+                $skipped++;
+                // Optionally log the duplicate error here
+            }
         }
     }
 

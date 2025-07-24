@@ -70,9 +70,7 @@ if (!$result) {
         <form method="GET" class="d-flex justify-content-center mb-4">
             <input type="text" class="form-control w-25" name="search" placeholder="Search by product name"
                 value="<?php echo htmlspecialchars($search); ?>">
-            <select class="form-select w-25 ms-2" name="category" id="category-select" onchange="this.form.submit()">
-                <option value="">Select Category</option>
-            </select>
+            <select class="form-select w-25 ms-2" name="category" id="category-select" onchange="this.form.submit()"></select>
         </form>
         <div class="container">
             <h2>Import Produk Massal dari CSV</h2>
@@ -94,7 +92,7 @@ if (!$result) {
         </div>
 
         <!-- Grid View -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="gridView">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4" id="gridView">
             <?php
             $result->data_seek(0);
             while ($row = $result->fetch_assoc()) {
@@ -117,7 +115,7 @@ if (!$result) {
                                 <h6 class="card-title text-center" style="
                                     display: -webkit-box;
                                     -webkit-line-clamp: 2;
-                                    -webkit-box-orient: vertical;
+                                    -webkit-box-orient: vertical;     
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                     line-height: 1.2em;
@@ -125,9 +123,8 @@ if (!$result) {
                                 ">
                                     ' . htmlspecialchars($row['name']) . '
                                 </h6>
-                                <p class="card-text text-center text-muted">Rp. ' . number_format($row['price'], 0, ',', '.') . '</p>
-                                <p class="card-text text-center small">Satuan : ' . $row['unit'] . '</p>
-                                <p class="card-text text-center small">Kategori : ' . $row['category'] . '</p>
+                                <p class="card-text text-center text-muted" style="font-size: 1em;">Rp. ' . number_format($row['price'], 0, ',', '.') . '</p>
+                                <p class="card-text text-center small" style="font-size: 0.9em;">Kategori : ' . $row['category'] . '</p>
                                 <div class="text-center">' . $platformLinks . '</div>
                             </div>
                             <div class="card-footer text-center">
