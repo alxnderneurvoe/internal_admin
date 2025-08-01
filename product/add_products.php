@@ -12,12 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $siplah_link = $conn->real_escape_string($_POST['siplah_link'] ?? '');
     $blibli_link = $conn->real_escape_string($_POST['blibli_link'] ?? '');
     $spec = $conn->real_escape_string($_POST['spec'] ?? '');
-    
+
     // Handle file upload
     $image_url = '';
     if (!empty($_FILES['image']['name'])) {
         $target_dir = "../uploads/";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $original_filename = $_FILES["image"]["name"];
+        $sanitized_filename = sanitize_filename(pathinfo($original_filename, PATHINFO_FILENAME));
+        $extension = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+
+        // Gabungkan dengan ekstensi
+        $new_filename = $sanitized_filename . '_' . time() . '.' . $extension;
+        $target_file = $target_dir . $new_filename;
+
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
             $image_url = $target_file;
         }
@@ -26,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Insert product data
     $sql = "INSERT INTO products (name, price, unit, category, image_url, tokopedia_link, shopee_link, inaproc_link, siplah_link, blibli_link, spec) 
             VALUES ('$name', '$price', '$unit', '$category', '$image_url', '$tokopedia_link', '$shopee_link', '$inaproc_link', '$siplah_link', '$blibli_link', '$spec')";
-    
+
     if ($conn->query($sql) === TRUE) {
         $product_id = $conn->insert_id;
 
@@ -35,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach ($_POST['variant_name'] as $key => $variant_name) {
                 $variant_name = $conn->real_escape_string($variant_name);
                 $variant_price = $conn->real_escape_string($_POST['variant_price'][$key]);
-                
+
                 if (!empty($variant_name) && is_numeric($variant_price)) {
                     $sql_variant = "INSERT INTO product_variants (product_id, variant_name, variant_price) 
                                     VALUES ('$product_id', '$variant_name', '$variant_price')";
@@ -43,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
-        
+
         header("Location: products.php?success=Product added successfully");
         exit();
     } else {

@@ -127,8 +127,6 @@ INSERT INTO `products` (`id`, `name`, `price`, `unit`, `category`, `image_url`, 
 (180, 'Mesin Pengupas Kulit Kopi Kering (Huller) - HK 200', 16999000, 'Unit', 'Mesin Industri', '', '', '', 'https://katalog.inaproc.id/semesta-sistem-solusindo/mesin-pengupas-kulit-kopi-kering-huller-hk-200', '', '', '', '', 0, ''),
 (181, 'Mesin Pengupas Kulit Kopi Basah (Pulper) - PK150LC', 15513687, 'Unit', 'Mesin Industri', '', '', '', 'https://katalog.inaproc.id/semesta-sistem-solusindo/mesin-pengupas-kulit-kopi-basah-pulper-pk150lc', '', '', '', '', 0, ''),
 (182, 'Mesin Pengupas Kulit Kopi Basah (Pulper) - PK150', 14200000, 'Unit', 'Mesin Industri', '', '', '', 'https://katalog.inaproc.id/semesta-sistem-solusindo/mesin-pengupas-kulit-kopi-basah-pulper-pk150', '', '', '', '', 0, ''),
-(188, 'aa', 386, 'Batang', 'Mesin Welding Pipe', '../uploads/logo poltek tik.jpg', 'https://www.tokopedia.com/tokosemestasistem/socket-fusion-welding-machine-top-table-sfp-160-1730991716979934384', 'https://katalog.inaproc.id/semesta-sistem-solusindo/9-buku-anti-korupsi-penguatan-jati-diri-bangsa-dan-karakter', 'https://www.tokopedia.com/tokosemestasistem/socket-fusion-welding-machine-top-table-sfp-160-1730991716979934384', 'https://www.tokopedia.com/tokosemestasistem/socket-fusion-welding-machine-top-table-sfp-160-1730991716979934384', 'https://katalog.inaproc.id/semesta-sistem-solusindo/lemari-besi-gw-15', '', '', 0, 'TP-LINK ARCHER TX20U PLUS \"AX1800 HIGH GAIN DUAL BAND WI-FI 6 USB ADPTER SPEED : 1201MBPS AT 5GHZ + 574 MBPS AT 2.4 GHZ SPEC : 2X HIGH GAIN EXTERNAL ANTENNAS, USB 3.0');
-
 --
 -- Indexes for dumped tables
 --

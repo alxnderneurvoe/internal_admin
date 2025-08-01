@@ -18,6 +18,15 @@ if (isset($_GET['id'])) {
     exit;
 }
 
+function sanitize_filename($filename)
+{
+    // Hilangkan karakter yang tidak diizinkan
+    $filename = preg_replace("/['\"%!@#\$^&*\(\)\.:;]/", "", $filename);
+    // Ganti spasi dengan underscore
+    $filename = str_replace(' ', '_', $filename);
+    return $filename;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $name = $_POST['name'];
@@ -31,29 +40,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = $_POST['category'];
     $spec = $_POST['spec'];
 
-
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $image_name = $_FILES['image']['name'];
-        $image_tmp_name = $_FILES['image']['tmp_name'];
-        $image_path = '../uploads/' . $image_name;
+        $original_filename = $_FILES['image']['name'];
+        $sanitized_filename = sanitize_filename(pathinfo($original_filename, PATHINFO_FILENAME));
+        $extension = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+        $new_filename = $sanitized_filename . '_' . time() . '.' . $extension;
+        $image_path = '../uploads/' . $new_filename;
 
-
-        move_uploaded_file($image_tmp_name, $image_path);
-
+        move_uploaded_file($_FILES['image']['tmp_name'], $image_path);
 
         $sql = "UPDATE products SET 
-                name = '$name', 
-                price = '$price', 
-                unit = '$unit', 
-                tokopedia_link = '$tokopedia_link', 
-                shopee_link = '$shopee_link', 
-                inaproc_link = '$inaproc_link', 
-                siplah_link = '$siplah_link', 
-                blibli_link = '$blibli_link', 
-                image_url = '$image_path',
-                category = '$category',
-                spec = '$spec'
-                WHERE id = $product_id";
+            name = '$name', 
+            price = '$price', 
+            unit = '$unit', 
+            tokopedia_link = '$tokopedia_link', 
+            shopee_link = '$shopee_link', 
+            inaproc_link = '$inaproc_link', 
+            siplah_link = '$siplah_link', 
+            blibli_link = '$blibli_link', 
+            image_url = '$image_path',
+            category = '$category',
+            spec = '$spec'
+            WHERE id = $product_id";
     } else {
         $sql = "UPDATE products SET 
                 name = '$name', 
@@ -246,7 +254,7 @@ $categories = [
             <div class="mb-3">
                 <label for="spec" class="form-label">Spesifikasi</label>
                 <textarea name="spec" id="spec" class="form-control" placeholder="Spesifikasi" rows="2"
-                        style="resize: vertical;"></textarea>
+                    style="resize: vertical;"></textarea>
             </div>
             <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
